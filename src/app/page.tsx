@@ -1,9 +1,5 @@
-import { WeddingCardForm } from "@/components/wedding-card-form";
+import { LandingPage } from "@/features/landing/landing-page";
 
 export default function Home() {
-  return (
-    <div className="min-h-screen">
-      <WeddingCardForm />
-    </div>
-  );
+  return <LandingPage />;
 }

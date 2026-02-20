@@ -11,7 +11,7 @@ interface FormHeaderProps {
 }
 
 export function FormHeader({
-  title = "Cipta e-Kad Digital Anda",
+  title = "Cipta Kad Digital Anda",
   subtitle = "Hasilkan kad jemputan digital yang cantik dan eksklusif untuk majlis istimewa anda",
   className,
 }: FormHeaderProps) {
