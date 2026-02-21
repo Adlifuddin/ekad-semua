@@ -140,5 +140,14 @@
       "invalidLink": "Pautan tidak sah",
       "themeRequired": "Sila pilih tema"
     }
+  },
+  "WeddingInvitation": {
+    "invitationTo": "Jemputan Ke",
+    "childrenOf": "Anak Kepada",
+    "date": "Tarikh",
+    "time": "Masa",
+    "location": "Lokasi",
+    "contactUs": "Hubungi Kami",
+    "footerMessage": "Kehadiran dan doa restu anda amat diharapkan"
   }
 }

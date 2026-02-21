@@ -140,5 +140,14 @@
       "invalidLink": "Invalid link",
       "themeRequired": "Please select a theme"
     }
+  },
+  "WeddingInvitation": {
+    "invitationTo": "Invitation to",
+    "childrenOf": "Children of",
+    "date": "Date",
+    "time": "Time",
+    "location": "Location",
+    "contactUs": "Contact Us",
+    "footerMessage": "Your presence and prayers are highly appreciated"
   }
 }
