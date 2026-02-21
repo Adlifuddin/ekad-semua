@@ -1,0 +1,144 @@
+{
+  "LandingPage": {
+    "heading": {
+      "highlight": "Kad Digital",
+      "rest": "untuk semua"
+    },
+    "description": "Cipta kad digital yang cantik, mudah dan murah.",
+    "createButton": "Cipta",
+    "footer": "Hak cipta terpelihara."
+  },
+  "Wizard": {
+    "previous": "Sebelumnya",
+    "next": "Seterusnya",
+    "complete": "Selesai",
+    "step": "Langkah"
+  },
+  "WeddingForm": {
+    "header": {
+      "title": "Cipta Kad Digital Anda",
+      "subtitle": "Hasilkan kad jemputan digital yang cantik dan eksklusif untuk majlis istimewa anda"
+    },
+    "steps": {
+      "card": {
+        "title": "Kad",
+        "description": "Konfigurasi kad"
+      },
+      "couple": {
+        "title": "Pasangan",
+        "description": "Maklumat pengantin"
+      },
+      "event": {
+        "title": "Majlis",
+        "description": "Butiran majlis"
+      },
+      "location": {
+        "title": "Lokasi",
+        "description": "Alamat & navigasi"
+      },
+      "contacts": {
+        "title": "Hubungan",
+        "description": "Maklumat dihubungi"
+      }
+    },
+    "cardConfig": {
+      "title": "Konfigurasi Kad",
+      "description": "Pilih bahasa, design dan URL kad anda",
+      "cardLanguage": "Bahasa Kad",
+      "selectTheme": "Pilih Tema",
+      "cardUrl": "URL Kad",
+      "urlPlaceholder": "contoh-nama-kad",
+      "urlDescription": "URL untuk kad digital anda (gunakan huruf kecil dan tanda '-' sahaja)",
+      "urlPrefix": "ekad-semua /",
+      "languages": {
+        "malay": "Bahasa Malaysia",
+        "english": "English"
+      },
+      "designs": {
+        "design1": "Design 01",
+        "design2": "Design 02"
+      }
+    },
+    "coupleInfo": {
+      "title": "Maklumat Pasangan",
+      "description": "Nama penuh dan panggilan pengantin",
+      "groomFullName": "Nama Penuh Lelaki",
+      "groomFullNamePlaceholder": "Ahmad bin Abdullah",
+      "brideFullName": "Nama Penuh Perempuan",
+      "brideFullNamePlaceholder": "Nora binti Ali",
+      "groomNickname": "Nama Panggilan Lelaki",
+      "groomNicknamePlaceholder": "Ahmad",
+      "brideNickname": "Nama Panggilan Perempuan",
+      "brideNicknamePlaceholder": "Nora",
+      "nameOrder": "Susunan Nama pada Kad",
+      "nameOrderMaleFemale": "Lelaki & Perempuan",
+      "nameOrderFemaleMale": "Perempuan & Lelaki",
+      "parentsInfo": "Maklumat Ibu Bapa",
+      "fatherName": "Nama Bapa",
+      "fatherNamePlaceholder": "Abdullah bin Hassan",
+      "motherName": "Nama Ibu",
+      "motherNamePlaceholder": "Fatimah binti Ibrahim"
+    },
+    "eventInfo": {
+      "title": "Butiran Majlis",
+      "description": "Tarikh, masa dan jenis majlis",
+      "eventType": "Jenis Majlis",
+      "eventTypePlaceholder": "Pilih jenis majlis",
+      "eventDate": "Tarikh Majlis",
+      "eventDatePlaceholder": "Pilih tarikh",
+      "hijriDate": "Tarikh Hijrah",
+      "hijriDatePlaceholder": "15 Ramadan 1446",
+      "startTime": "Masa Mula",
+      "startTimePlaceholder": "Pilih masa",
+      "endTime": "Masa Tamat",
+      "endTimePlaceholder": "Pilih masa",
+      "eventTypes": {
+        "wedding": "Majlis Perkahwinan",
+        "engagement": "Majlis Pertunangan",
+        "reception": "Majlis Resepsi",
+        "nikah": "Majlis Akad Nikah"
+      }
+    },
+    "location": {
+      "title": "Lokasi Majlis",
+      "description": "Alamat dan pautan navigasi",
+      "addressLine1": "Alamat Baris 1",
+      "addressLine1Placeholder": "No. 123, Jalan Mawar",
+      "addressLine2": "Alamat Baris 2",
+      "addressLine2Placeholder": "Taman Bunga, 50000 Kuala Lumpur",
+      "navigationLinks": "Pautan Navigasi (Pilihan)",
+      "googleMaps": "Google Maps",
+      "googleMapsPlaceholder": "https://maps.google.com/...",
+      "waze": "Waze",
+      "wazePlaceholder": "https://waze.com/..."
+    },
+    "contacts": {
+      "title": "Maklumat Dihubungi",
+      "description": "Untuk tetamu menghubungi jika diperlukan",
+      "namePlaceholder": "Nama",
+      "phonePlaceholder": "No. Telefon",
+      "addButton": "+ Tambah Hubungan",
+      "completionMessage": "Selepas ini, anda akan menerima e-kad digital yang cantik untuk majlis anda",
+      "completionHint": "Klik",
+      "completionButton": "Selesai",
+      "completionHint2": "untuk mencipta kad anda"
+    },
+    "validation": {
+      "selectDesign": "Sila pilih design kad",
+      "urlRequired": "URL kad diperlukan",
+      "urlFormat": "Gunakan huruf kecil dan tanda '-' sahaja",
+      "groomNameRequired": "Nama penuh pengantin lelaki diperlukan",
+      "brideNameRequired": "Nama penuh pengantin perempuan diperlukan",
+      "groomNicknameRequired": "Nama panggilan lelaki diperlukan",
+      "brideNicknameRequired": "Nama panggilan perempuan diperlukan",
+      "emailInvalid": "Email tidak sah",
+      "eventTypeRequired": "Jenis majlis diperlukan",
+      "eventDateRequired": "Tarikh majlis diperlukan",
+      "startTimeRequired": "Masa mula diperlukan",
+      "endTimeRequired": "Masa tamat diperlukan",
+      "address1Required": "Alamat baris 1 diperlukan",
+      "invalidLink": "Pautan tidak sah",
+      "themeRequired": "Sila pilih tema"
+    }
+  }
+}

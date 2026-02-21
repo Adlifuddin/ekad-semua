@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/contexts/theme-context";
+import { useTranslations } from "next-intl";
 
 export interface WizardStep {
   id: string;
@@ -27,6 +28,7 @@ export function FormWizard({
   className,
 }: FormWizardProps) {
   const { theme } = useTheme();
+  const t = useTranslations("Wizard");
   const [currentStep, setCurrentStep] = useState(0);
   const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set());
 
@@ -166,11 +168,11 @@ export function FormWizard({
             className={cn("transition-all", isFirstStep && "invisible")}
           >
             <ChevronLeft className="w-4 h-4 mr-2" />
-            Sebelumnya
+            {t("previous")}
           </Button>
 
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <span className="hidden md:inline">Langkah</span>
+            <span className="hidden md:inline">{t("step")}</span>
             <span className="font-semibold text-foreground">
               {currentStep + 1}
             </span>
@@ -188,12 +190,12 @@ export function FormWizard({
           >
             {isLastStep ? (
               <>
-                Selesai
+                {t("complete")}
                 <Check className="w-4 h-4 ml-2" />
               </>
             ) : (
               <>
-                Seterusnya
+                {t("next")}
                 <ChevronRight className="w-4 h-4 ml-2" />
               </>
             )}

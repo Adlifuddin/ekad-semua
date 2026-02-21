@@ -1,0 +1,144 @@
+{
+  "LandingPage": {
+    "heading": {
+      "highlight": "Digital Cards",
+      "rest": "for everyone"
+    },
+    "description": "Create beautiful, easy and affordable digital cards.",
+    "createButton": "Create",
+    "footer": "All rights reserved."
+  },
+  "Wizard": {
+    "previous": "Previous",
+    "next": "Next",
+    "complete": "Complete",
+    "step": "Step"
+  },
+  "WeddingForm": {
+    "header": {
+      "title": "Create Your Digital Card",
+      "subtitle": "Create a beautiful and exclusive digital invitation card for your special event"
+    },
+    "steps": {
+      "card": {
+        "title": "Card",
+        "description": "Card configuration"
+      },
+      "couple": {
+        "title": "Couple",
+        "description": "Couple information"
+      },
+      "event": {
+        "title": "Event",
+        "description": "Event details"
+      },
+      "location": {
+        "title": "Location",
+        "description": "Address & navigation"
+      },
+      "contacts": {
+        "title": "Contact",
+        "description": "Contact information"
+      }
+    },
+    "cardConfig": {
+      "title": "Card Configuration",
+      "description": "Choose language, design and your card URL",
+      "cardLanguage": "Card Language",
+      "selectTheme": "Select Theme",
+      "cardUrl": "Card URL",
+      "urlPlaceholder": "example-card-name",
+      "urlDescription": "URL for your digital card (use lowercase and '-' only)",
+      "urlPrefix": "ekad-semua /",
+      "languages": {
+        "malay": "Bahasa Malaysia",
+        "english": "English"
+      },
+      "designs": {
+        "design1": "Design 01",
+        "design2": "Design 02"
+      }
+    },
+    "coupleInfo": {
+      "title": "Couple Information",
+      "description": "Full names and nicknames of the bride and groom",
+      "groomFullName": "Groom's Full Name",
+      "groomFullNamePlaceholder": "Ahmad bin Abdullah",
+      "brideFullName": "Bride's Full Name",
+      "brideFullNamePlaceholder": "Nora binti Ali",
+      "groomNickname": "Groom's Nickname",
+      "groomNicknamePlaceholder": "Ahmad",
+      "brideNickname": "Bride's Nickname",
+      "brideNicknamePlaceholder": "Nora",
+      "nameOrder": "Name Order on Card",
+      "nameOrderMaleFemale": "Male & Female",
+      "nameOrderFemaleMale": "Female & Male",
+      "parentsInfo": "Parents Information",
+      "fatherName": "Father's Name",
+      "fatherNamePlaceholder": "Abdullah bin Hassan",
+      "motherName": "Mother's Name",
+      "motherNamePlaceholder": "Fatimah binti Ibrahim"
+    },
+    "eventInfo": {
+      "title": "Event Details",
+      "description": "Date, time and event type",
+      "eventType": "Event Type",
+      "eventTypePlaceholder": "Select event type",
+      "eventDate": "Event Date",
+      "eventDatePlaceholder": "Select date",
+      "hijriDate": "Hijri Date",
+      "hijriDatePlaceholder": "15 Ramadan 1446",
+      "startTime": "Start Time",
+      "startTimePlaceholder": "Select time",
+      "endTime": "End Time",
+      "endTimePlaceholder": "Select time",
+      "eventTypes": {
+        "wedding": "Wedding Ceremony",
+        "engagement": "Engagement Ceremony",
+        "reception": "Reception Ceremony",
+        "nikah": "Nikah Ceremony"
+      }
+    },
+    "location": {
+      "title": "Event Location",
+      "description": "Address and navigation links",
+      "addressLine1": "Address Line 1",
+      "addressLine1Placeholder": "No. 123, Jalan Mawar",
+      "addressLine2": "Address Line 2",
+      "addressLine2Placeholder": "Taman Bunga, 50000 Kuala Lumpur",
+      "navigationLinks": "Navigation Links (Optional)",
+      "googleMaps": "Google Maps",
+      "googleMapsPlaceholder": "https://maps.google.com/...",
+      "waze": "Waze",
+      "wazePlaceholder": "https://waze.com/..."
+    },
+    "contacts": {
+      "title": "Contact Information",
+      "description": "For guests to contact if needed",
+      "namePlaceholder": "Name",
+      "phonePlaceholder": "Phone Number",
+      "addButton": "+ Add Contact",
+      "completionMessage": "After this, you will receive a beautiful digital e-card for your event",
+      "completionHint": "Click",
+      "completionButton": "Complete",
+      "completionHint2": "to create your card"
+    },
+    "validation": {
+      "selectDesign": "Please select a card design",
+      "urlRequired": "Card URL is required",
+      "urlFormat": "Use lowercase and '-' only",
+      "groomNameRequired": "Groom's full name is required",
+      "brideNameRequired": "Bride's full name is required",
+      "groomNicknameRequired": "Groom's nickname is required",
+      "brideNicknameRequired": "Bride's nickname is required",
+      "emailInvalid": "Invalid email",
+      "eventTypeRequired": "Event type is required",
+      "eventDateRequired": "Event date is required",
+      "startTimeRequired": "Start time is required",
+      "endTimeRequired": "End time is required",
+      "address1Required": "Address line 1 is required",
+      "invalidLink": "Invalid link",
+      "themeRequired": "Please select a theme"
+    }
+  }
+}

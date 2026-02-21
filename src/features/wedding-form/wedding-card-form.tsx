@@ -19,11 +19,12 @@ import { FormDynamicField } from "@/components/shared/form-dynamic-field";
 import { FormDatePicker } from "@/components/shared/form-date-picker";
 import { FormTimePicker } from "@/components/shared/form-time-picker";
 import { FormWizard, WizardStep } from "@/components/shared/form-wizard";
-import { FormHeader } from "@/components/shared/form-header";
+import { WeddingCardFormHeader } from "./wedding-card-form-header";
 import { FormCardGridSelector } from "@/components/shared/form-card-grid-selector";
 import { Users, Calendar, MapPin, Phone, CreditCard } from "lucide-react";
 import { useTheme } from "@/contexts/theme-context";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 const formSchema = z.object({
   // Card Configuration
@@ -75,6 +76,7 @@ type Contact = {
 
 export function WeddingCardForm() {
   const { theme } = useTheme();
+  const t = useTranslations("WeddingForm");
   const [contacts, setContacts] = useState<Contact[]>([
     { id: "1", name: "", phone: "" },
   ]);
@@ -141,28 +143,28 @@ export function WeddingCardForm() {
   const wizardSteps: WizardStep[] = [
     {
       id: "card-config",
-      title: "Kad",
-      description: "Konfigurasi kad",
+      title: t("steps.card.title"),
+      description: t("steps.card.description"),
     },
     {
       id: "couple",
-      title: "Pasangan",
-      description: "Maklumat pengantin",
+      title: t("steps.couple.title"),
+      description: t("steps.couple.description"),
     },
     {
       id: "event",
-      title: "Majlis",
-      description: "Butiran majlis",
+      title: t("steps.event.title"),
+      description: t("steps.event.description"),
     },
     {
       id: "location",
-      title: "Lokasi",
-      description: "Alamat & navigasi",
+      title: t("steps.location.title"),
+      description: t("steps.location.description"),
     },
     {
       id: "contacts",
-      title: "Hubungan",
-      description: "Maklumat dihubungi",
+      title: t("steps.contacts.title"),
+      description: t("steps.contacts.description"),
     },
   ];
 
@@ -174,7 +176,7 @@ export function WeddingCardForm() {
       )}
     >
       <div className="max-w-3xl mx-auto">
-        <FormHeader />
+        <WeddingCardFormHeader />
 
         <Form {...form}>
           <FormWizard steps={wizardSteps} onComplete={handleComplete}>
@@ -192,10 +194,10 @@ export function WeddingCardForm() {
                   </div>
                   <div>
                     <CardTitle className="text-xl md:text-2xl">
-                      Konfigurasi Kad
+                      {t("cardConfig.title")}
                     </CardTitle>
                     <CardDescription className="text-sm">
-                      Pilih bahasa, design dan URL kad anda
+                      {t("cardConfig.description")}
                     </CardDescription>
                   </div>
                 </div>
@@ -204,16 +206,16 @@ export function WeddingCardForm() {
                 <FormRadioGroup
                   control={form.control}
                   name="cardLanguage"
-                  label="Bahasa Kad"
+                  label={t("cardConfig.cardLanguage")}
                   required
                   options={[
                     {
                       value: "bahasa",
-                      label: "Bahasa Malaysia",
+                      label: t("cardConfig.languages.malay"),
                     },
                     {
                       value: "english",
-                      label: "English",
+                      label: t("cardConfig.languages.english"),
                     },
                   ]}
                   direction="horizontal"
@@ -222,18 +224,18 @@ export function WeddingCardForm() {
                 <FormCardGridSelector
                   control={form.control}
                   name="cardDesign"
-                  label="Pilih Tema"
+                  label={t("cardConfig.selectTheme")}
                   required
                   className="w-full"
                   options={[
                     {
                       value: "design-1",
-                      label: "Design 01",
+                      label: t("cardConfig.designs.design1"),
                       imageUrl: "/card-design/blue_bg.png",
                     },
                     {
                       value: "design-2",
-                      label: "Design 02",
+                      label: t("cardConfig.designs.design2"),
                       imageUrl: "/card-design/peach_bg.png",
                     },
                   ]}
@@ -241,13 +243,13 @@ export function WeddingCardForm() {
 
                 <FormInput
                   showButton
-                  buttonLabel="ekad-semua /"
+                  buttonLabel={t("cardConfig.urlPrefix")}
                   control={form.control}
                   name="cardUrl"
-                  label="URL Kad"
-                  placeholder="contoh-nama-kad"
+                  label={t("cardConfig.cardUrl")}
+                  placeholder={t("cardConfig.urlPlaceholder")}
                   required
-                  description="URL untuk kad digital anda (gunakan huruf kecil dan tanda '-')"
+                  description={t("cardConfig.urlDescription")}
                 />
               </CardContent>
             </Card>
@@ -266,10 +268,10 @@ export function WeddingCardForm() {
                   </div>
                   <div>
                     <CardTitle className="text-xl md:text-2xl">
-                      Maklumat Pasangan
+                      {t("coupleInfo.title")}
                     </CardTitle>
                     <CardDescription className="text-sm">
-                      Nama penuh dan panggilan pengantin
+                      {t("coupleInfo.description")}
                     </CardDescription>
                   </div>
                 </div>
@@ -279,15 +281,15 @@ export function WeddingCardForm() {
                   <FormInput
                     control={form.control}
                     name="groomFullName"
-                    label="Nama Penuh Lelaki"
-                    placeholder="Ahmad bin Abdullah"
+                    label={t("coupleInfo.groomFullName")}
+                    placeholder={t("coupleInfo.groomFullNamePlaceholder")}
                     required
                   />
                   <FormInput
                     control={form.control}
                     name="brideFullName"
-                    label="Nama Penuh Perempuan"
-                    placeholder="Nora binti Ali"
+                    label={t("coupleInfo.brideFullName")}
+                    placeholder={t("coupleInfo.brideFullNamePlaceholder")}
                     required
                   />
                 </div>
@@ -296,15 +298,15 @@ export function WeddingCardForm() {
                   <FormInput
                     control={form.control}
                     name="groomNickname"
-                    label="Nama Panggilan Lelaki"
-                    placeholder="Ahmad"
+                    label={t("coupleInfo.groomNickname")}
+                    placeholder={t("coupleInfo.groomNicknamePlaceholder")}
                     required
                   />
                   <FormInput
                     control={form.control}
                     name="brideNickname"
-                    label="Nama Panggilan Perempuan"
-                    placeholder="Nora"
+                    label={t("coupleInfo.brideNickname")}
+                    placeholder={t("coupleInfo.brideNicknamePlaceholder")}
                     required
                   />
                 </div>
@@ -312,16 +314,16 @@ export function WeddingCardForm() {
                 <FormRadioGroup
                   control={form.control}
                   name="nameOrder"
-                  label="Susunan Nama pada Kad"
+                  label={t("coupleInfo.nameOrder")}
                   required
                   options={[
                     {
                       value: "male-female",
-                      label: "Lelaki & Perempuan",
+                      label: t("coupleInfo.nameOrderMaleFemale"),
                     },
                     {
                       value: "female-male",
-                      label: "Perempuan & Lelaki",
+                      label: t("coupleInfo.nameOrderFemaleMale"),
                     },
                   ]}
                   direction="horizontal"
@@ -329,20 +331,20 @@ export function WeddingCardForm() {
 
                 <div className={cn("pt-4 border-t", theme.colors.border)}>
                   <p className="text-sm font-medium mb-4 text-muted-foreground">
-                    Maklumat Ibu Bapa
+                    {t("coupleInfo.parentsInfo")}
                   </p>
                   <div className="grid md:grid-cols-2 gap-4">
                     <FormInput
                       control={form.control}
                       name="fatherName"
-                      label="Nama Bapa"
-                      placeholder="Abdullah bin Hassan"
+                      label={t("coupleInfo.fatherName")}
+                      placeholder={t("coupleInfo.fatherNamePlaceholder")}
                     />
                     <FormInput
                       control={form.control}
                       name="motherName"
-                      label="Nama Ibu"
-                      placeholder="Fatimah binti Ibrahim"
+                      label={t("coupleInfo.motherName")}
+                      placeholder={t("coupleInfo.motherNamePlaceholder")}
                     />
                   </div>
                 </div>
@@ -363,10 +365,10 @@ export function WeddingCardForm() {
                   </div>
                   <div>
                     <CardTitle className="text-xl md:text-2xl">
-                      Butiran Majlis
+                      {t("eventInfo.title")}
                     </CardTitle>
                     <CardDescription className="text-sm">
-                      Tarikh, masa dan jenis majlis
+                      {t("eventInfo.description")}
                     </CardDescription>
                   </div>
                 </div>
@@ -375,15 +377,27 @@ export function WeddingCardForm() {
                 <FormSelect
                   control={form.control}
                   name="eventType"
-                  label="Jenis Majlis"
-                  placeholder="Pilih jenis majlis"
+                  label={t("eventInfo.eventType")}
+                  placeholder={t("eventInfo.eventTypePlaceholder")}
                   required
                   className="w-full"
                   options={[
-                    { value: "perkahwinan", label: "Majlis Perkahwinan" },
-                    { value: "pertunangan", label: "Majlis Pertunangan" },
-                    { value: "resepsi", label: "Majlis Resepsi" },
-                    { value: "akad-nikah", label: "Majlis Akad Nikah" },
+                    {
+                      value: "perkahwinan",
+                      label: t("eventInfo.eventTypes.wedding"),
+                    },
+                    {
+                      value: "pertunangan",
+                      label: t("eventInfo.eventTypes.engagement"),
+                    },
+                    {
+                      value: "resepsi",
+                      label: t("eventInfo.eventTypes.reception"),
+                    },
+                    {
+                      value: "akad-nikah",
+                      label: t("eventInfo.eventTypes.nikah"),
+                    },
                   ]}
                 />
 
@@ -391,15 +405,15 @@ export function WeddingCardForm() {
                   <FormDatePicker
                     control={form.control}
                     name="eventDate"
-                    label="Tarikh Majlis"
-                    placeholder="Pilih tarikh"
+                    label={t("eventInfo.eventDate")}
+                    placeholder={t("eventInfo.eventDatePlaceholder")}
                     required
                   />
                   <FormInput
                     control={form.control}
                     name="hijriDate"
-                    label="Tarikh Hijrah"
-                    placeholder="15 Ramadan 1446"
+                    label={t("eventInfo.hijriDate")}
+                    placeholder={t("eventInfo.hijriDatePlaceholder")}
                     disabled
                   />
                 </div>
@@ -408,15 +422,15 @@ export function WeddingCardForm() {
                   <FormTimePicker
                     control={form.control}
                     name="startTime"
-                    label="Masa Mula"
-                    placeholder="Pilih masa"
+                    label={t("eventInfo.startTime")}
+                    placeholder={t("eventInfo.startTimePlaceholder")}
                     required
                   />
                   <FormTimePicker
                     control={form.control}
                     name="endTime"
-                    label="Masa Tamat"
-                    placeholder="Pilih masa"
+                    label={t("eventInfo.endTime")}
+                    placeholder={t("eventInfo.endTimePlaceholder")}
                     required
                   />
                 </div>
@@ -437,10 +451,10 @@ export function WeddingCardForm() {
                   </div>
                   <div>
                     <CardTitle className="text-xl md:text-2xl">
-                      Lokasi Majlis
+                      {t("location.title")}
                     </CardTitle>
                     <CardDescription className="text-sm">
-                      Alamat dan pautan navigasi
+                      {t("location.description")}
                     </CardDescription>
                   </div>
                 </div>
@@ -449,35 +463,35 @@ export function WeddingCardForm() {
                 <FormInput
                   control={form.control}
                   name="addressLine1"
-                  label="Alamat Baris 1"
-                  placeholder="No. 123, Jalan Mawar"
+                  label={t("location.addressLine1")}
+                  placeholder={t("location.addressLine1Placeholder")}
                   required
                 />
 
                 <FormInput
                   control={form.control}
                   name="addressLine2"
-                  label="Alamat Baris 2"
-                  placeholder="Taman Bunga, 50000 Kuala Lumpur"
+                  label={t("location.addressLine2")}
+                  placeholder={t("location.addressLine2Placeholder")}
                 />
 
                 <div className={cn("pt-4 border-t", theme.colors.border)}>
                   <p className="text-sm font-medium mb-4 text-muted-foreground">
-                    Pautan Navigasi (Pilihan)
+                    {t("location.navigationLinks")}
                   </p>
                   <div className="space-y-4">
                     <FormInput
                       control={form.control}
                       name="googleMapsLink"
-                      label="Google Maps"
-                      placeholder="https://maps.google.com/..."
+                      label={t("location.googleMaps")}
+                      placeholder={t("location.googleMapsPlaceholder")}
                     />
 
                     <FormInput
                       control={form.control}
                       name="wazeLink"
-                      label="Waze"
-                      placeholder="https://waze.com/..."
+                      label={t("location.waze")}
+                      placeholder={t("location.wazePlaceholder")}
                     />
                   </div>
                 </div>
@@ -498,10 +512,10 @@ export function WeddingCardForm() {
                   </div>
                   <div>
                     <CardTitle className="text-xl md:text-2xl">
-                      Maklumat Dihubungi
+                      {t("contacts.title")}
                     </CardTitle>
                     <CardDescription className="text-sm">
-                      Untuk tetamu menghubungi jika diperlukan
+                      {t("contacts.description")}
                     </CardDescription>
                   </div>
                 </div>
@@ -513,10 +527,16 @@ export function WeddingCardForm() {
                   onRemove={removeContact}
                   onUpdate={updateContact}
                   fields={[
-                    { name: "name", placeholder: "Nama" },
-                    { name: "phone", placeholder: "No. Telefon" },
+                    {
+                      name: "name",
+                      placeholder: t("contacts.namePlaceholder"),
+                    },
+                    {
+                      name: "phone",
+                      placeholder: t("contacts.phonePlaceholder"),
+                    },
                   ]}
-                  addButtonText="+ Tambah Hubungan"
+                  addButtonText={t("contacts.addButton")}
                   minItems={1}
                 />
 
@@ -528,12 +548,14 @@ export function WeddingCardForm() {
                     )}
                   >
                     <p className="text-sm text-muted-foreground mb-2">
-                      Selepas ini, anda akan menerima e-kad digital yang cantik
-                      untuk majlis anda
+                      {t("contacts.completionMessage")}
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      Klik <span className="font-semibold">Selesai</span> untuk
-                      mencipta kad anda
+                      {t("contacts.completionHint")}{" "}
+                      <span className="font-semibold">
+                        {t("contacts.completionButton")}
+                      </span>{" "}
+                      {t("contacts.completionHint2")}
                     </p>
                   </div>
                 </div>
