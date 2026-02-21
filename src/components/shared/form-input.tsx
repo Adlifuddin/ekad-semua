@@ -8,6 +8,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Control, FieldPath, FieldValues } from "react-hook-form";
+import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
 
 interface FormInputProps<TFieldValues extends FieldValues> {
   control: Control<TFieldValues>;
@@ -17,6 +19,10 @@ interface FormInputProps<TFieldValues extends FieldValues> {
   type?: string;
   description?: string;
   required?: boolean;
+  disabled?: boolean;
+  showButton?: boolean;
+  buttonLabel?: string;
+  onButtonClick?: () => void;
 }
 
 export function FormInput<TFieldValues extends FieldValues>({
@@ -27,6 +33,10 @@ export function FormInput<TFieldValues extends FieldValues>({
   type = "text",
   description,
   required = false,
+  disabled = false,
+  showButton = false,
+  buttonLabel = "Search",
+  onButtonClick,
 }: FormInputProps<TFieldValues>) {
   return (
     <FormField
@@ -38,7 +48,26 @@ export function FormInput<TFieldValues extends FieldValues>({
             {label} {required && "*"}
           </FormLabel>
           <FormControl>
-            <Input type={type} placeholder={placeholder} {...field} />
+            {showButton ? (
+              <ButtonGroup className="w-full">
+                <Button variant="outline" type="button" onClick={onButtonClick}>
+                  {buttonLabel}
+                </Button>
+                <Input
+                  type={type}
+                  placeholder={placeholder}
+                  disabled={disabled}
+                  {...field}
+                />
+              </ButtonGroup>
+            ) : (
+              <Input
+                type={type}
+                placeholder={placeholder}
+                disabled={disabled}
+                {...field}
+              />
+            )}
           </FormControl>
           {description && <FormDescription>{description}</FormDescription>}
           <FormMessage />

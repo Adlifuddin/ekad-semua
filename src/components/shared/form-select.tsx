@@ -28,6 +28,7 @@ interface FormSelectProps<TFieldValues extends FieldValues> {
   options: SelectOption[];
   description?: string;
   required?: boolean;
+  className?: string;
 }
 
 export function FormSelect<TFieldValues extends FieldValues>({
@@ -38,6 +39,7 @@ export function FormSelect<TFieldValues extends FieldValues>({
   options,
   description,
   required = false,
+  className,
 }: FormSelectProps<TFieldValues>) {
   return (
     <FormField
@@ -50,7 +52,7 @@ export function FormSelect<TFieldValues extends FieldValues>({
           </FormLabel>
           <Select onValueChange={field.onChange} defaultValue={field.value}>
             <FormControl>
-              <SelectTrigger>
+              <SelectTrigger className={className}>
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>
             </FormControl>
