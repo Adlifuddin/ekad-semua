@@ -1,4 +1,5 @@
 import { WeddingInvitation } from "@/features/wedding-invitation/wedding-invitation";
+import { ca } from "zod/locales";
 
 // This would typically fetch data from a database based on the ID
 // For now, we'll use sample data that matches the formSchema
@@ -8,6 +9,8 @@ async function getInvitationData(id: string) {
   // Example: const data = await db.invitation.findUnique({ where: { cardUrl: id } })
 
   return {
+    cardLanguage: "ms" as const,
+    cardDesign: "design1",
     groomFullName: "Ahmad bin Abdullah",
     brideFullName: "Nora binti Ali",
     groomNickname: "Ahmad",
@@ -44,5 +47,5 @@ export default async function InvitationPage({
 }) {
   const data = await getInvitationData(params.id);
 
-  return <WeddingInvitation data={data} locale="bahasa" />;
+  return <WeddingInvitation data={data} />;
 }

@@ -1,11 +1,17 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { MapPin, Phone, Navigation } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 export type WeddingInvitationData = {
+  // Card Configuration
+  cardLanguage: "ms" | "en";
+  cardDesign?: string;
+
   // Couple Information
   groomFullName: string;
   brideFullName: string;
@@ -37,13 +43,9 @@ export type WeddingInvitationData = {
 
 interface WeddingInvitationProps {
   data: WeddingInvitationData;
-  locale?: string;
 }
 
-export function WeddingInvitation({
-  data,
-  locale = "en",
-}: WeddingInvitationProps) {
+export function WeddingInvitation({ data }: WeddingInvitationProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
@@ -112,10 +114,12 @@ export function WeddingInvitation({
           nickname: data.groomNickname,
         };
 
+  const locale = data.cardLanguage;
+
   const formatDateShort = (dateString: string) => {
     const date = new Date(dateString);
     const weekday = new Intl.DateTimeFormat(
-      locale === "bahasa" ? "ms-MY" : "en-US",
+      locale === "ms" ? "ms-MY" : "en-US",
       {
         weekday: "long",
       },
@@ -128,7 +132,7 @@ export function WeddingInvitation({
 
   const formatDateLong = (dateString: string) => {
     const date = new Date(dateString);
-    return new Intl.DateTimeFormat(locale === "bahasa" ? "ms-MY" : "en-US", {
+    return new Intl.DateTimeFormat(locale === "ms" ? "ms-MY" : "en-US", {
       weekday: "long",
       year: "numeric",
       month: "long",
@@ -139,31 +143,67 @@ export function WeddingInvitation({
   const dateShort = formatDateShort(data.eventDate);
   const dateLong = formatDateLong(data.eventDate);
 
+  // Curtain animation variants
+  const curtainVariants = {
+    closed: { x: 0, opacity: 1 },
+    open: { x: "-100%", opacity: 0 },
+  };
+
+  const rightCurtainVariants = {
+    closed: { x: 0, opacity: 1 },
+    open: { x: "100%", opacity: 0 },
+  };
+
+  const badgeVariants = {
+    initial: { scale: 1, opacity: 1 },
+    exit: { scale: 0.8, opacity: 0 },
+  };
+
+  // Scroll animation variants
+  const fadeInUpVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0 },
+  };
+
+  // Countdown animation variants
+  const countdownItemVariants = {
+    hidden: { opacity: 0, scale: 0.5 },
+    visible: { opacity: 1, scale: 1 },
+  };
+
   return (
     <div className="relative min-h-screen">
-      {/* Left Curtain Panel */}
-      <div
-        onClick={openCurtain}
-        className={cn(
-          "fixed top-0 left-0 w-1/2 h-screen z-50 cursor-pointer",
-          "bg-linear-to-br from-gray-50 to-gray-100",
-          "transition-all duration-1000 ease-out",
-          isOpen ? "-translate-x-full invisible" : "translate-x-0",
-        )}
-      ></div>
-
       {/* Background (content behind curtains) */}
       <div className="flex items-center justify-center w-full">
-        <div className="h-full z-10 w-xl max-w-2xl shadow-lg shadow-gray-200 pb-20">
+        <div className="h-full z-10 w-xl max-w-2xl shadow-lg shadow-gray-200 pb-14">
           {/* Hero Section - Cover Page */}
-          <section className="min-h-screen flex items-center justify-center">
-            <div className="mx-10 text-center space-y-12">
+          <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
+            {/* Background Image */}
+            {data.cardDesign && (
+              <div className="absolute inset-0 z-0">
+                <Image
+                  src={`/card-design/${data.cardDesign}.png`}
+                  alt="Wedding background"
+                  fill
+                  className="object-cover"
+                  priority
+                />
+                <div className="absolute inset-0 bg-white/10" />
+              </div>
+            )}
+
+            <motion.div
+              className="mx-10 text-center space-y-12 relative z-10"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.3 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              variants={fadeInUpVariants}
+            >
               {/* Event Type Header */}
               <div className="space-y-4">
                 <p className="text-xs md:text-sm uppercase tracking-[0.3em] text-muted-foreground font-light">
-                  {locale === "bahasa"
-                    ? "Majlis Perkahwinan"
-                    : "The Wedding Of"}
+                  {locale === "ms" ? "Majlis Perkahwinan" : "The Wedding Of"}
                 </p>
 
                 {/* Couple Names - Hero Display */}
@@ -192,16 +232,30 @@ export function WeddingInvitation({
                   {dateShort.weekday.toUpperCase()} • {dateShort.formatted}
                 </p>
               </div>
-            </div>
+            </motion.div>
           </section>
 
           {/* Details Section */}
           <section className="min-h-screen flex items-center justify-center">
-            <div className="mx-10 text-center space-y-12 py-5">
+            <motion.div
+              className="mx-20 text-center space-y-12 py-16"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.2 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              variants={fadeInUpVariants}
+            >
               {/* Opening Text */}
-              <div className="space-y-4">
+              <motion.div
+                className="space-y-4"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: false, amount: 0.5 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                variants={fadeInUpVariants}
+              >
                 <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
-                  {locale === "bahasa"
+                  {locale === "ms"
                     ? "Dengan penuh rasa syukur ke hadrat Allah S.W.T"
                     : "With Joy and Gratitude to Almighty God"}
                 </p>
@@ -227,11 +281,11 @@ export function WeddingInvitation({
 
                 {/* Invitation Text */}
                 <p className="text-sm text-muted-foreground">
-                  {locale === "bahasa"
+                  {locale === "ms"
                     ? "dengan hormatnya menjemput"
                     : "cordially invite"}
                 </p>
-                {locale === "bahasa" && (
+                {locale === "ms" && (
                   <p className="text-sm text-muted-foreground">
                     Dato&apos;/Datin/Tuan/Puan/Encik/Cik
                   </p>
@@ -243,14 +297,21 @@ export function WeddingInvitation({
                     </p>
                   ))}
                 <p className="text-sm text-muted-foreground">
-                  {locale === "bahasa"
-                    ? `ke majlis ${data.eventType.toLowerCase()} ${locale === "bahasa" ? "anak kami" : "of our son and daughter"}`
+                  {locale === "ms"
+                    ? `ke majlis ${data.eventType.toLowerCase()} ${locale === "ms" ? "anak kami" : "of our son and daughter"}`
                     : `to the ${data.eventType.toLowerCase()} reception of our son and daughter`}
                 </p>
-              </div>
+              </motion.div>
 
               {/* Full Names */}
-              <div className="space-y-6">
+              <motion.div
+                className="space-y-6"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: false, amount: 0.5 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                variants={fadeInUpVariants}
+              >
                 <h2 className="text-3xl md:text-4xl text-muted-foreground font-elegant tracking-wide">
                   {firstPerson.fullName}
                 </h2>
@@ -260,12 +321,19 @@ export function WeddingInvitation({
                 <h2 className="text-3xl md:text-4xl text-muted-foreground font-elegant tracking-wide">
                   {secondPerson.fullName}
                 </h2>
-              </div>
+              </motion.div>
 
               {/* VENUE Section */}
-              <div className="space-y-4 pt-12">
+              <motion.div
+                className="space-y-4 pt-12"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: false, amount: 0.5 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                variants={fadeInUpVariants}
+              >
                 <h3 className="text-sm uppercase tracking-[0.3em] font-semibold">
-                  {locale === "bahasa" ? "Lokasi" : "Venue"}
+                  {locale === "ms" ? "Lokasi" : "Venue"}
                 </h3>
                 <div className="space-y-2">
                   <p className="text-base text-muted-foreground leading-relaxed">
@@ -319,12 +387,19 @@ export function WeddingInvitation({
                     </div>
                   )}
                 </div>
-              </div>
+              </motion.div>
 
               {/* DATE Section */}
-              <div className="space-y-4 pt-8">
+              <motion.div
+                className="space-y-4 pt-8"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: false, amount: 0.5 }}
+                transition={{ duration: 0.5 }}
+                variants={fadeInUpVariants}
+              >
                 <h3 className="text-sm uppercase tracking-[0.3em] font-semibold">
-                  {locale === "bahasa" ? "Tarikh" : "Date"}
+                  {locale === "ms" ? "Tarikh" : "Date"}
                 </h3>
                 <div className="space-y-1">
                   <p className="text-base text-muted-foreground">{dateLong}</p>
@@ -334,25 +409,39 @@ export function WeddingInvitation({
                     </p>
                   )}
                 </div>
-              </div>
+              </motion.div>
 
               {/* TIME Section */}
-              <div className="space-y-4 pt-8">
+              <motion.div
+                className="space-y-4 pt-8"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: false, amount: 0.5 }}
+                transition={{ duration: 0.5 }}
+                variants={fadeInUpVariants}
+              >
                 <h3 className="text-sm uppercase tracking-[0.3em] font-semibold">
-                  {locale === "bahasa" ? "Masa" : "Time"}
+                  {locale === "ms" ? "Masa" : "Time"}
                 </h3>
                 <p className="text-base text-muted-foreground">
                   {data.startTime} - {data.endTime}
                 </p>
-              </div>
+              </motion.div>
 
               {/* CONTACT Section */}
-              <div className="space-y-2 pt-8">
+              <motion.div
+                className="space-y-2 pt-8"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: false, amount: 0.5 }}
+                transition={{ duration: 0.5 }}
+                variants={fadeInUpVariants}
+              >
                 <h3 className="text-sm uppercase tracking-[0.3em] font-semibold">
-                  {locale === "bahasa" ? "Hubungi" : "Contact"}
+                  {locale === "ms" ? "Hubungi" : "Contact"}
                 </h3>
                 <p className="text-base text-muted-foreground">
-                  {locale === "bahasa"
+                  {locale === "ms"
                     ? "Untuk sebarang pertanyaan"
                     : "For any inquiries"}
                 </p>
@@ -383,102 +472,235 @@ export function WeddingInvitation({
                     ))}
                   </div>
                 )}
-              </div>
+              </motion.div>
 
-              <div className="space-y-6 pt-12">
+              <motion.div
+                className="space-y-6 pt-12"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: false, amount: 0.5 }}
+                transition={{ duration: 0.5 }}
+                variants={fadeInUpVariants}
+              >
                 <h3 className="text-lg uppercase text-muted-foreground">
                   #AHMADXNORA
                 </h3>
-              </div>
+              </motion.div>
 
               {/* COUNTDOWN Section */}
-              <div className="space-y-6 pt-8">
+              <motion.div
+                className="space-y-6 pt-8"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: false, amount: 0.5 }}
+                transition={{ duration: 0.5 }}
+                variants={fadeInUpVariants}
+              >
                 <h3 className="text-sm uppercase tracking-[0.3em] font-semibold">
-                  {locale === "bahasa" ? "Menghitung Hari" : "Counting Down"}
+                  {locale === "ms" ? "Menghitung Hari" : "Counting Down"}
                 </h3>
                 <div className="grid grid-cols-4 gap-4 max-w-md mx-auto">
-                  <div className="text-center">
-                    <div className="text-3xl md:text-4xl font-display font-bold text-muted-foreground">
+                  {/* Days */}
+                  <motion.div
+                    className="text-center"
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: false }}
+                    transition={{
+                      delay: 0.1,
+                      duration: 0.5,
+                      type: "spring",
+                      stiffness: 100,
+                    }}
+                    variants={countdownItemVariants}
+                  >
+                    <motion.div
+                      key={timeLeft.days}
+                      initial={{ scale: 1.2, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                      className="text-3xl md:text-4xl font-display font-bold text-muted-foreground"
+                    >
                       {timeLeft.days}
-                    </div>
+                    </motion.div>
                     <div className="text-xs md:text-sm text-muted-foreground mt-2 uppercase tracking-wider">
-                      {locale === "bahasa" ? "Hari" : "Days"}
+                      {locale === "ms" ? "Hari" : "Days"}
                     </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-3xl md:text-4xl font-display font-bold text-muted-foreground">
+                  </motion.div>
+
+                  {/* Hours */}
+                  <motion.div
+                    className="text-center"
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: false }}
+                    transition={{
+                      delay: 0.2,
+                      duration: 0.5,
+                      type: "spring",
+                      stiffness: 100,
+                    }}
+                    variants={countdownItemVariants}
+                  >
+                    <motion.div
+                      key={timeLeft.hours}
+                      initial={{ scale: 1.2, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                      className="text-3xl md:text-4xl font-display font-bold text-muted-foreground"
+                    >
                       {timeLeft.hours}
-                    </div>
+                    </motion.div>
                     <div className="text-xs md:text-sm text-muted-foreground mt-2 uppercase tracking-wider">
-                      {locale === "bahasa" ? "Jam" : "Hours"}
+                      {locale === "ms" ? "Jam" : "Hours"}
                     </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-3xl md:text-4xl font-display font-bold text-muted-foreground">
+                  </motion.div>
+
+                  {/* Minutes */}
+                  <motion.div
+                    className="text-center"
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: false }}
+                    transition={{
+                      delay: 0.3,
+                      duration: 0.5,
+                      type: "spring",
+                      stiffness: 100,
+                    }}
+                    variants={countdownItemVariants}
+                  >
+                    <motion.div
+                      key={timeLeft.minutes}
+                      initial={{ scale: 1.2, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                      className="text-3xl md:text-4xl font-display font-bold text-muted-foreground"
+                    >
                       {timeLeft.minutes}
-                    </div>
+                    </motion.div>
                     <div className="text-xs md:text-sm text-muted-foreground mt-2 uppercase tracking-wider">
-                      {locale === "bahasa" ? "Minit" : "Minutes"}
+                      {locale === "ms" ? "Minit" : "Minutes"}
                     </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-3xl md:text-4xl font-display font-bold text-muted-foreground">
+                  </motion.div>
+
+                  {/* Seconds */}
+                  <motion.div
+                    className="text-center"
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: false }}
+                    transition={{
+                      delay: 0.4,
+                      duration: 0.5,
+                      type: "spring",
+                      stiffness: 100,
+                    }}
+                    variants={countdownItemVariants}
+                  >
+                    <motion.div
+                      key={timeLeft.seconds}
+                      initial={{ scale: 1.2, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                      className="text-3xl md:text-4xl font-display font-bold text-muted-foreground"
+                    >
                       {timeLeft.seconds}
-                    </div>
+                    </motion.div>
                     <div className="text-xs md:text-sm text-muted-foreground mt-2 uppercase tracking-wider">
-                      {locale === "bahasa" ? "Saat" : "Seconds"}
+                      {locale === "ms" ? "Saat" : "Seconds"}
                     </div>
-                  </div>
+                  </motion.div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Watermark */}
-              <div className="pt-12 pb-4">
+              <motion.div
+                className="pt-12 pb-4"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: false, amount: 0.5 }}
+                transition={{ duration: 0.5 }}
+                variants={fadeInUpVariants}
+              >
                 <div className="text-center space-y-1">
                   <p className="text-sm text-muted-foreground/50 font-light tracking-wide">
-                    {locale === "bahasa" ? "Dicipta oleh" : "Created by"}
+                    {locale === "ms" ? "Dicipta oleh" : "Created by"}
                   </p>
                   <p className="text-xl text-muted-foreground/60 font-serif tracking-wider">
                     ekad-semua
                   </p>
                 </div>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </section>
         </div>
       </div>
 
-      {/* Right Curtain Panel */}
-      <div
-        onClick={openCurtain}
-        className={cn(
-          "fixed top-0 right-0 w-1/2 h-screen z-50 cursor-pointer",
-          "bg-white shadow-[inset_0px_0px_10px_rgba(0,0,0,0.5)]",
-          "transition-all duration-1000 ease-out",
-          isOpen ? "translate-x-full invisible" : "translate-x-0",
-        )}
-      ></div>
+      {/* Curtain Overlay */}
+      <AnimatePresence>
+        {!isOpen && (
+          <>
+            {/* Left Curtain Panel */}
+            <motion.div
+              onClick={openCurtain}
+              variants={curtainVariants}
+              initial="closed"
+              animate="closed"
+              exit="open"
+              transition={{
+                duration: 1.2,
+                ease: [0.43, 0.13, 0.23, 0.96],
+              }}
+              className={cn(
+                "fixed top-0 left-0 w-1/2 h-screen z-50 cursor-pointer",
+                "bg-linear-to-br from-gray-50 to-gray-100",
+              )}
+            />
 
-      {/* Circular Badge with Initials - Centered between curtains */}
-      <div
-        onClick={openCurtain}
-        className={cn(
-          "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-60 cursor-pointer",
-          "transition-opacity duration-500",
-          isOpen ? "opacity-0 invisible" : "opacity-100",
+            {/* Right Curtain Panel */}
+            <motion.div
+              onClick={openCurtain}
+              variants={rightCurtainVariants}
+              initial="closed"
+              animate="closed"
+              exit="open"
+              transition={{
+                duration: 1.2,
+                ease: [0.43, 0.13, 0.23, 0.96],
+              }}
+              className={cn(
+                "fixed top-0 right-0 w-1/2 h-screen z-50 cursor-pointer",
+                "bg-white shadow-[inset_0px_0px_10px_rgba(0,0,0,0.5)]",
+              )}
+            />
+
+            {/* Circular Badge with Initials - Centered between curtains */}
+            <motion.div
+              onClick={openCurtain}
+              variants={badgeVariants}
+              initial="initial"
+              exit="exit"
+              transition={{
+                duration: 0.5,
+                ease: "easeOut",
+              }}
+              className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-60 cursor-pointer"
+            >
+              <div className="w-28 h-28 md:w-40 md:h-40 rounded-full bg-muted/30 border-2 border-muted-foreground/40 flex items-center justify-center shadow-lg backdrop-blur-sm flex-col space-y-4">
+                <p className="text-2xl md:text-4xl font-display font-light text-muted-foreground tracking-wider">
+                  {firstPerson.nickname.charAt(0).toUpperCase()}
+                  <span className="font-serif italic mx-1">&</span>
+                  {secondPerson.nickname.charAt(0).toUpperCase()}
+                </p>
+                <p className="text-lg md:text-xl text-center text-gray-600 font-light">
+                  {locale === "ms" ? "Buka" : "Open"}
+                </p>
+              </div>
+            </motion.div>
+          </>
         )}
-      >
-        <div className="w-28 h-28 md:w-40 md:h-40 rounded-full bg-muted/30 border-2 border-muted-foreground/40 flex items-center justify-center shadow-lg backdrop-blur-sm flex-col space-y-4">
-          <p className="text-2xl md:text-4xl font-display font-light text-muted-foreground tracking-wider">
-            {firstPerson.nickname.charAt(0).toUpperCase()}
-            <span className="font-serif italic mx-1">&</span>
-            {secondPerson.nickname.charAt(0).toUpperCase()}
-          </p>
-          <p className="text-lg md:text-xl text-center text-gray-600 font-light">
-            {locale === "bahasa" ? "Buka" : "Open"}
-          </p>
-        </div>
-      </div>
+      </AnimatePresence>
     </div>
   );
 }

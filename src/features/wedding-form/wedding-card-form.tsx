@@ -239,14 +239,14 @@ export function WeddingCardForm({
                   className="w-full"
                   options={[
                     {
-                      value: "design-1",
+                      value: "design1",
                       label: t("cardConfig.designs.design1"),
-                      imageUrl: "/card-design/blue_bg.png",
+                      imageUrl: "/card-design/design1.png",
                     },
                     {
-                      value: "design-2",
+                      value: "design2",
                       label: t("cardConfig.designs.design2"),
-                      imageUrl: "/card-design/peach_bg.png",
+                      imageUrl: "/card-design/design2.png",
                     },
                   ]}
                 />
