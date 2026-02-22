@@ -1,9 +1,7 @@
 "use client";
 
-import { Heart, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/contexts/theme-context";
-import { useTranslations } from "next-intl";
 
 interface WeddingCardFormHeaderProps {
   title?: string;
@@ -12,15 +10,9 @@ interface WeddingCardFormHeaderProps {
 }
 
 export function WeddingCardFormHeader({
-  title,
-  subtitle,
   className,
 }: WeddingCardFormHeaderProps) {
   const { theme } = useTheme();
-  const t = useTranslations("WeddingForm.header");
-
-  const displayTitle = title || t("title");
-  const displaySubtitle = subtitle || t("subtitle");
 
   return (
     <div className={cn("text-center mb-8 md:mb-12", className)}>
@@ -31,12 +23,13 @@ export function WeddingCardFormHeader({
           theme.gradient.primary,
         )}
       >
-        {displayTitle}
+        Cipta Kad Digital Anda
       </h1>
 
       {/* Subtitle */}
       <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-        {displaySubtitle}
+        Hasilkan kad jemputan digital yang cantik dan eksklusif untuk majlis
+        istimewa anda
       </p>
     </div>
   );

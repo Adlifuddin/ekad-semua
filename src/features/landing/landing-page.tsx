@@ -4,12 +4,9 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useTheme } from "@/contexts/theme-context";
 import { cn } from "@/lib/utils";
-import { useTranslations } from "next-intl";
 
 export function LandingPage() {
   const { theme } = useTheme();
-
-  const t = useTranslations("LandingPage");
 
   return (
     <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8">
@@ -30,12 +27,12 @@ export function LandingPage() {
                 theme.gradient.primary,
               )}
             >
-              {t("heading.highlight")}
+              Kad Digital
             </span>{" "}
-            {t("heading.rest")}
+            untuk semua
           </h2>
           <p className="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto">
-            {t("description")}
+            Cipta kad digital yang cantik dengan mudah dan murah.
           </p>
         </div>
 
@@ -48,7 +45,7 @@ export function LandingPage() {
                 theme.gradient.primary,
               )}
             >
-              {t("createButton")}
+              Cipta Kad
             </Button>
           </Link>
         </div>

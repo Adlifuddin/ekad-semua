@@ -1,13 +1,4 @@
 {
-  "LandingPage": {
-    "heading": {
-      "highlight": "Kad Digital",
-      "rest": "untuk semua"
-    },
-    "description": "Cipta kad digital yang cantik, mudah dan murah.",
-    "createButton": "Cipta",
-    "footer": "Hak cipta terpelihara."
-  },
   "Wizard": {
     "previous": "Sebelumnya",
     "next": "Seterusnya",
@@ -15,10 +6,6 @@
     "step": "Langkah"
   },
   "WeddingForm": {
-    "header": {
-      "title": "Cipta Kad Digital Anda",
-      "subtitle": "Hasilkan kad jemputan digital yang cantik dan eksklusif untuk majlis istimewa anda"
-    },
     "steps": {
       "card": {
         "title": "Kad",

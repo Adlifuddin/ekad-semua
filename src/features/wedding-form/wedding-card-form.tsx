@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import * as z from "zod";
 import {
   Card,
@@ -25,10 +25,11 @@ import { Users, Calendar, MapPin, Phone, CreditCard } from "lucide-react";
 import { useTheme } from "@/contexts/theme-context";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   // Card Configuration
-  cardLanguage: z.enum(["bahasa", "english"]),
+  cardLanguage: z.enum(["ms", "en"]),
   cardDesign: z.string().min(1, "Sila pilih design kad"),
   cardUrl: z
     .string()
@@ -74,7 +75,11 @@ type Contact = {
   phone: string;
 };
 
-export function WeddingCardForm() {
+export function WeddingCardForm({
+  updateLocale,
+}: {
+  updateLocale: (cardLanguage: string) => void;
+}) {
   const { theme } = useTheme();
   const t = useTranslations("WeddingForm");
   const [contacts, setContacts] = useState<Contact[]>([
@@ -84,7 +89,7 @@ export function WeddingCardForm() {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      cardLanguage: "bahasa",
+      cardLanguage: "ms",
       cardDesign: "",
       cardUrl: "",
       groomFullName: "",
@@ -107,6 +112,16 @@ export function WeddingCardForm() {
       theme: "",
     },
   });
+
+  const cardLanguage = useWatch({
+    control: form.control,
+    name: "cardLanguage",
+  });
+
+  useEffect(() => {
+    console.log("cardLanguage changed:", cardLanguage);
+    updateLocale(cardLanguage);
+  }, [cardLanguage]);
 
   const onSubmit = (values: FormValues) => {
     const formData = {
@@ -205,11 +220,11 @@ export function WeddingCardForm() {
                   required
                   options={[
                     {
-                      value: "bahasa",
+                      value: "ms",
                       label: t("cardConfig.languages.malay"),
                     },
                     {
-                      value: "english",
+                      value: "en",
                       label: t("cardConfig.languages.english"),
                     },
                   ]}

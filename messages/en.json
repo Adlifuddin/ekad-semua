@@ -1,13 +1,4 @@
 {
-  "LandingPage": {
-    "heading": {
-      "highlight": "Digital Cards",
-      "rest": "for everyone"
-    },
-    "description": "Create beautiful, easy and affordable digital cards.",
-    "createButton": "Create",
-    "footer": "All rights reserved."
-  },
   "Wizard": {
     "previous": "Previous",
     "next": "Next",
@@ -15,10 +6,6 @@
     "step": "Step"
   },
   "WeddingForm": {
-    "header": {
-      "title": "Create Your Digital Card",
-      "subtitle": "Create a beautiful and exclusive digital invitation card for your special event"
-    },
     "steps": {
       "card": {
         "title": "Card",
