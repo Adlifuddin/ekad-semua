@@ -393,20 +393,16 @@ export function WeddingCardForm({
                   className="w-full"
                   options={[
                     {
-                      value: "perkahwinan",
-                      label: t("eventInfo.eventTypes.wedding"),
-                    },
-                    {
                       value: "pertunangan",
                       label: t("eventInfo.eventTypes.engagement"),
                     },
                     {
-                      value: "resepsi",
-                      label: t("eventInfo.eventTypes.reception"),
+                      value: "perkahwinan",
+                      label: t("eventInfo.eventTypes.wedding"),
                     },
                     {
-                      value: "akad-nikah",
-                      label: t("eventInfo.eventTypes.nikah"),
+                      value: "resepsi",
+                      label: t("eventInfo.eventTypes.reception"),
                     },
                   ]}
                 />
