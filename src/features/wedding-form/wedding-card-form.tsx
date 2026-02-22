@@ -169,12 +169,7 @@ export function WeddingCardForm() {
   ];
 
   return (
-    <div
-      className={cn(
-        "min-h-screen py-8 md:py-12 px-4 bg-linear-to-br",
-        theme.gradient.light,
-      )}
-    >
+    <div className="container mx-auto px-4 py-8">
       <div className="max-w-3xl mx-auto">
         <WeddingCardFormHeader />
 
