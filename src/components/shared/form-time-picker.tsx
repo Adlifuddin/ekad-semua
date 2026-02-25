@@ -227,7 +227,7 @@ export function FormTimePicker<TFieldValues extends FieldValues>({
       render={({ field }) => (
         <FormItem>
           <FormLabel>
-            {label} {required && "*"}
+            {label} {required && <span className="text-red-500">*</span>}
           </FormLabel>
           <FormControl>
             <TimePickerInput

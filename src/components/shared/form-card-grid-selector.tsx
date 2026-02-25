@@ -62,7 +62,7 @@ export function FormCardGridSelector<T extends FieldValues>({
     <div className={cn("space-y-3", className)}>
       <Label>
         {label}
-        {required && <span className="text-red-500 ml-1">*</span>}
+        {required && <span className="text-red-500">*</span>}
       </Label>
 
       {/* Grid of card designs */}

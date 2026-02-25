@@ -40,7 +40,7 @@ export function FormRadioGroup<TFieldValues extends FieldValues>({
       render={({ field }) => (
         <FormItem>
           <FormLabel>
-            {label} {required && "*"}
+            {label} {required && <span className="text-red-500">*</span>}
           </FormLabel>
           <FormControl>
             <RadioGroup

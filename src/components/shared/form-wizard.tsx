@@ -165,7 +165,10 @@ export function FormWizard({
             variant="outline"
             onClick={handlePrevious}
             disabled={isFirstStep}
-            className={cn("transition-all", isFirstStep && "invisible")}
+            className={cn(
+              "cursor-pointer transition-all",
+              isFirstStep && "invisible",
+            )}
           >
             <ChevronLeft className="w-4 h-4 mr-2" />
             {t("previous")}
@@ -184,7 +187,7 @@ export function FormWizard({
             type="button"
             onClick={handleNext}
             className={cn(
-              "bg-linear-to-r text-white border-0 shadow-lg transition-all hover:scale-105",
+              "cursor-pointer bg-linear-to-r text-white border-0 shadow-lg transition-all hover:scale-105",
               theme.gradient.primary,
             )}
           >

@@ -75,7 +75,7 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
         return (
           <FormItem>
             <FormLabel>
-              {label} {required && "*"}
+              {label} {required && <span className="text-red-500">*</span>}
             </FormLabel>
             <FormControl>
               <div className="relative">
