@@ -26,6 +26,7 @@ import { useTheme } from "@/contexts/theme-context";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
+import { useWeddingConstants } from "@/hooks/useWeddingConstants";
 
 const formSchema = z.object({
   // Card Configuration
@@ -86,6 +87,13 @@ export function WeddingCardForm({
     { id: "1", name: "", phone: "" },
   ]);
 
+  const {
+    CARD_LANG_OPTIONS,
+    CARD_DESIGN_OPTIONS,
+    NAME_ORDER_OPTIONS,
+    EVENT_TYPE_OPTIONS,
+  } = useWeddingConstants();
+
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -100,7 +108,7 @@ export function WeddingCardForm({
       fatherName: "",
       motherName: "",
       email: "",
-      eventType: "",
+      eventType: "perkahwinan",
       eventDate: "",
       hijriDate: "",
       startTime: "",
@@ -109,7 +117,6 @@ export function WeddingCardForm({
       addressLine2: "",
       googleMapsLink: "",
       wazeLink: "",
-      theme: "",
     },
   });
 
@@ -119,7 +126,6 @@ export function WeddingCardForm({
   });
 
   useEffect(() => {
-    console.log("cardLanguage changed:", cardLanguage);
     updateLocale(cardLanguage);
   }, [cardLanguage]);
 
@@ -218,16 +224,7 @@ export function WeddingCardForm({
                   name="cardLanguage"
                   label={t("cardConfig.cardLanguage")}
                   required
-                  options={[
-                    {
-                      value: "ms",
-                      label: t("cardConfig.languages.malay"),
-                    },
-                    {
-                      value: "en",
-                      label: t("cardConfig.languages.english"),
-                    },
-                  ]}
+                  options={CARD_LANG_OPTIONS}
                   direction="horizontal"
                 />
 
@@ -237,18 +234,7 @@ export function WeddingCardForm({
                   label={t("cardConfig.selectTheme")}
                   required
                   className="w-full"
-                  options={[
-                    {
-                      value: "design1",
-                      label: t("cardConfig.designs.design1"),
-                      imageUrl: "/card-design/design1.png",
-                    },
-                    {
-                      value: "design2",
-                      label: t("cardConfig.designs.design2"),
-                      imageUrl: "/card-design/design2.png",
-                    },
-                  ]}
+                  options={CARD_DESIGN_OPTIONS}
                 />
 
                 <FormInput
@@ -326,16 +312,7 @@ export function WeddingCardForm({
                   name="nameOrder"
                   label={t("coupleInfo.nameOrder")}
                   required
-                  options={[
-                    {
-                      value: "male-female",
-                      label: t("coupleInfo.nameOrderMaleFemale"),
-                    },
-                    {
-                      value: "female-male",
-                      label: t("coupleInfo.nameOrderFemaleMale"),
-                    },
-                  ]}
+                  options={NAME_ORDER_OPTIONS}
                   direction="horizontal"
                 />
 
@@ -391,20 +368,7 @@ export function WeddingCardForm({
                   placeholder={t("eventInfo.eventTypePlaceholder")}
                   required
                   className="w-full"
-                  options={[
-                    {
-                      value: "pertunangan",
-                      label: t("eventInfo.eventTypes.engagement"),
-                    },
-                    {
-                      value: "perkahwinan",
-                      label: t("eventInfo.eventTypes.wedding"),
-                    },
-                    {
-                      value: "resepsi",
-                      label: t("eventInfo.eventTypes.reception"),
-                    },
-                  ]}
+                  options={EVENT_TYPE_OPTIONS}
                 />
 
                 <div className="grid md:grid-cols-2 gap-4">
