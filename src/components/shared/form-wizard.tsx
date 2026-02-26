@@ -17,14 +17,14 @@ export interface WizardStep {
 interface FormWizardProps {
   steps: WizardStep[];
   children: ReactNode[];
-  onComplete: () => void;
+  onValidate?: (stepIndex: number) => Promise<boolean>;
   className?: string;
 }
 
 export function FormWizard({
   steps,
   children,
-  onComplete,
+  onValidate,
   className,
 }: FormWizardProps) {
   const { theme } = useTheme();
@@ -35,13 +35,18 @@ export function FormWizard({
   const isFirstStep = currentStep === 0;
   const isLastStep = currentStep === steps.length - 1;
 
-  const handleNext = () => {
-    if (!isLastStep) {
-      setCompletedSteps((prev) => new Set([...prev, currentStep]));
-      setCurrentStep((prev) => prev + 1);
-    } else {
-      onComplete();
+  const handleNext = async () => {
+    // Validate current step before proceeding
+    if (onValidate) {
+      const isValid = await onValidate(currentStep);
+      if (!isValid) {
+        return; // Don't proceed if validation fails
+      }
     }
+
+    // Move to next step
+    setCompletedSteps((prev) => new Set([...prev, currentStep]));
+    setCurrentStep((prev) => prev + 1);
   };
 
   const handlePrevious = () => {
@@ -183,26 +188,30 @@ export function FormWizard({
             <span>{steps.length}</span>
           </div>
 
-          <Button
-            type="button"
-            onClick={handleNext}
-            className={cn(
-              "cursor-pointer bg-linear-to-r text-white border-0 shadow-lg transition-all hover:scale-105",
-              theme.gradient.primary,
-            )}
-          >
-            {isLastStep ? (
-              <>
-                {t("complete")}
-                <Check className="w-4 h-4 ml-2" />
-              </>
-            ) : (
-              <>
-                {t("next")}
-                <ChevronRight className="w-4 h-4 ml-2" />
-              </>
-            )}
-          </Button>
+          {isLastStep ? (
+            <Button
+              type="submit"
+              className={cn(
+                "cursor-pointer bg-linear-to-r text-white border-0 shadow-lg transition-all hover:scale-105",
+                theme.gradient.primary,
+              )}
+            >
+              {t("complete")}
+              <Check className="w-4 h-4 ml-2" />
+            </Button>
+          ) : (
+            <Button
+              type="button"
+              onClick={handleNext}
+              className={cn(
+                "cursor-pointer bg-linear-to-r text-white border-0 shadow-lg transition-all hover:scale-105",
+                theme.gradient.primary,
+              )}
+            >
+              {t("next")}
+              <ChevronRight className="w-4 h-4 ml-2" />
+            </Button>
+          )}
         </div>
       </div>
     </div>

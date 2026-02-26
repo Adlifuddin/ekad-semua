@@ -60,6 +60,8 @@
       "nameOrder": "Name Order on Card",
       "nameOrderMaleFemale": "Male & Female",
       "nameOrderFemaleMale": "Female & Male",
+      "coupleHashTag": "Couple's Hashtag",
+      "coupleHashTagPlaceholder": "AhmadXNora",
       "parentsInfo": "Parents Information",
       "fatherName": "Father's Name",
       "fatherNamePlaceholder": "Abdullah bin Hassan",
@@ -105,10 +107,8 @@
       "namePlaceholder": "Name",
       "phonePlaceholder": "Phone Number",
       "addButton": "+ Add Contact",
-      "completionMessage": "After this, you will receive a beautiful digital e-card for your event",
-      "completionHint": "Click",
-      "completionButton": "Complete",
-      "completionHint2": "to create your card"
+      "completionMessage": "You can view your beautiful digital e-card <here>here</here>",
+      "completionHint": "Click <complete>Complete</complete> to create your card"
     },
     "validation": {
       "selectDesign": "Please select a card design",
@@ -118,6 +118,8 @@
       "brideNameRequired": "Bride's full name is required",
       "groomNicknameRequired": "Groom's nickname is required",
       "brideNicknameRequired": "Bride's nickname is required",
+      "fatherNameRequired": "Father's name is required",
+      "motherNameRequired": "Mother's name is required",
       "emailInvalid": "Invalid email",
       "eventTypeRequired": "Event type is required",
       "eventDateRequired": "Event date is required",

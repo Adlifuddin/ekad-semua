@@ -60,6 +60,8 @@
       "nameOrder": "Susunan Nama pada Kad",
       "nameOrderMaleFemale": "Lelaki & Perempuan",
       "nameOrderFemaleMale": "Perempuan & Lelaki",
+      "coupleHashTag": "Hashtag Pasangan",
+      "coupleHashTagPlaceholder": "AhmadXNora",
       "parentsInfo": "Maklumat Ibu Bapa",
       "fatherName": "Nama Bapa",
       "fatherNamePlaceholder": "Abdullah bin Hassan",
@@ -105,10 +107,8 @@
       "namePlaceholder": "Nama",
       "phonePlaceholder": "No. Telefon",
       "addButton": "+ Tambah Hubungan",
-      "completionMessage": "Selepas ini, anda akan menerima e-kad digital yang cantik untuk majlis anda",
-      "completionHint": "Klik",
-      "completionButton": "Selesai",
-      "completionHint2": "untuk mencipta kad anda"
+      "completionMessage": "Anda boleh melihat kad digital yang cantik di <here>sini</here>",
+      "completionHint": "Klik <complete>Selesai</complete> untuk mencipta kad anda"
     },
     "validation": {
       "selectDesign": "Sila pilih design kad",
@@ -118,6 +118,8 @@
       "brideNameRequired": "Nama penuh pengantin perempuan diperlukan",
       "groomNicknameRequired": "Nama panggilan lelaki diperlukan",
       "brideNicknameRequired": "Nama panggilan perempuan diperlukan",
+      "fatherNameRequired": "Nama bapa diperlukan",
+      "motherNameRequired": "Nama ibu diperlukan",
       "emailInvalid": "Email tidak sah",
       "eventTypeRequired": "Jenis majlis diperlukan",
       "eventDateRequired": "Tarikh majlis diperlukan",
