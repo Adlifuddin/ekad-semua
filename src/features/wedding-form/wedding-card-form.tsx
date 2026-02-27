@@ -25,7 +25,7 @@ import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { useWeddingConstants } from "@/hooks/useWeddingConstants";
 import type { FormValues } from "@/app/form/page";
-import Link from "next/link";
+import { saveLocalStorage } from "@/lib/localStorage";
 
 type Contact = {
   id: string;
@@ -55,7 +55,7 @@ const stepFields: Record<number, (keyof FormValues)[]> = {
     "motherName",
   ],
   2: ["eventType", "eventDate", "startTime", "endTime"],
-  3: ["addressLine1"],
+  3: ["address"],
   4: [],
 };
 
@@ -375,17 +375,10 @@ export function WeddingCardForm({
                 <CardContent className="space-y-6">
                   <FormInput
                     control={form.control}
-                    name="addressLine1"
-                    label={t("location.addressLine1")}
-                    placeholder={t("location.addressLine1Placeholder")}
+                    name="address"
+                    label={t("location.address")}
+                    placeholder={t("location.addressPlaceholder")}
                     required
-                  />
-
-                  <FormInput
-                    control={form.control}
-                    name="addressLine2"
-                    label={t("location.addressLine2")}
-                    placeholder={t("location.addressLine2Placeholder")}
                   />
 
                   <div className={cn("pt-4 border-t", theme.colors.border)}>
@@ -465,14 +458,20 @@ export function WeddingCardForm({
                       <p className="text-sm text-muted-foreground mb-2">
                         {t.rich("contacts.completionMessage", {
                           here: (chunks) => (
-                            <Link
-                              href="/test"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="font-bold underline"
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const formValues = form.getValues();
+                                saveLocalStorage("weddingDemoData", formValues);
+                                window.open(
+                                  `/demo/${formValues.cardUrl}`,
+                                  "_blank",
+                                );
+                              }}
+                              className="font-bold underline hover:text-primary transition-colors cursor-pointer bg-transparent border-none p-0"
                             >
                               {chunks}
-                            </Link>
+                            </button>
                           ),
                         })}
                       </p>

@@ -31,24 +31,12 @@ function formatTime(time: string | undefined) {
     return "";
   }
 
-  const [hours, minutes] = time.split(":");
-  const hour = parseInt(hours);
-  const ampm = hour >= 12 ? "PM" : "AM";
-  const displayHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
-
-  return `${displayHour}:${minutes} ${ampm}`;
+  // Already in 12-hour format with AM/PM
+  return time;
 }
 
-function formatTo24Hour(hour: string, minute: string, period: string): string {
-  let hour24 = parseInt(hour);
-
-  if (period === "PM" && hour24 !== 12) {
-    hour24 += 12;
-  } else if (period === "AM" && hour24 === 12) {
-    hour24 = 0;
-  }
-
-  return `${String(hour24).padStart(2, "0")}:${minute}`;
+function format12Hour(hour: string, minute: string, period: string): string {
+  return `${hour}:${minute} ${period}`;
 }
 
 interface FormTimePickerProps<TFieldValues extends FieldValues> {
@@ -80,16 +68,14 @@ function TimePickerInput({
     if (!timeStr) {
       return { hour: "12", minute: "00", period: "AM" };
     }
-    const [hours24Str, mins] = timeStr.split(":");
-    const hour24 = parseInt(hours24Str);
-    const period = hour24 >= 12 ? "PM" : "AM";
-    const hour12 =
-      hour24 === 0
-        ? "12"
-        : hour24 > 12
-          ? String(hour24 - 12).padStart(2, "0")
-          : String(hour24).padStart(2, "0");
-    return { hour: hour12, minute: mins || "00", period };
+    // Parse format "02:30 PM"
+    const [time, period] = timeStr.split(" ");
+    const [hour, mins] = time.split(":");
+    return {
+      hour: hour.padStart(2, "0"),
+      minute: mins || "00",
+      period: period || "AM",
+    };
   };
 
   const parsedTime = parseTime(value);
@@ -111,24 +97,10 @@ function TimePickerInput({
     String(i).padStart(2, "0"),
   );
 
-  const updateTime = (hour: string, minute: string, period: string) => {
-    const time24 = formatTo24Hour(hour, minute, period);
-    onChange(time24);
-  };
-
-  const handleHourChange = (hour: string) => {
-    setSelectedHour(hour);
-    updateTime(hour, selectedMinute, selectedPeriod);
-  };
-
-  const handleMinuteChange = (minute: string) => {
-    setSelectedMinute(minute);
-    updateTime(selectedHour, minute, selectedPeriod);
-  };
-
-  const handlePeriodChange = (period: string) => {
-    setSelectedPeriod(period);
-    updateTime(selectedHour, selectedMinute, period);
+  const handleApply = () => {
+    const time12 = format12Hour(selectedHour, selectedMinute, selectedPeriod);
+    onChange(time12);
+    setOpen(false);
   };
 
   return (
@@ -167,7 +139,7 @@ function TimePickerInput({
           <div className="space-y-4">
             <div className="text-sm font-medium text-center">Select Time</div>
             <div className="flex gap-2 items-center justify-center">
-              <Select value={selectedHour} onValueChange={handleHourChange}>
+              <Select value={selectedHour} onValueChange={setSelectedHour}>
                 <SelectTrigger className="w-17.5">
                   <SelectValue placeholder="HH" />
                 </SelectTrigger>
@@ -182,7 +154,7 @@ function TimePickerInput({
 
               <span className="text-xl font-semibold">:</span>
 
-              <Select value={selectedMinute} onValueChange={handleMinuteChange}>
+              <Select value={selectedMinute} onValueChange={setSelectedMinute}>
                 <SelectTrigger className="w-17.5">
                   <SelectValue placeholder="MM" />
                 </SelectTrigger>
@@ -195,7 +167,7 @@ function TimePickerInput({
                 </SelectContent>
               </Select>
 
-              <Select value={selectedPeriod} onValueChange={handlePeriodChange}>
+              <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
                 <SelectTrigger className="w-17.5">
                   <SelectValue placeholder="AM" />
                 </SelectTrigger>
@@ -205,6 +177,14 @@ function TimePickerInput({
                 </SelectContent>
               </Select>
             </div>
+            <Button
+              type="button"
+              onClick={handleApply}
+              className="w-full"
+              size="sm"
+            >
+              Apply
+            </Button>
           </div>
         </PopoverContent>
       </Popover>

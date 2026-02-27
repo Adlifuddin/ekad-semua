@@ -11,6 +11,7 @@ export type WeddingInvitationData = {
   // Card Configuration
   cardLanguage: "ms" | "en";
   cardDesign?: string;
+  coupleHashTag?: string;
 
   // Couple Information
   groomFullName: string;
@@ -29,8 +30,7 @@ export type WeddingInvitationData = {
   endTime: string;
 
   // Location
-  addressLine1: string;
-  addressLine2?: string;
+  address: string;
   googleMapsLink?: string;
   wazeLink?: string;
 
@@ -46,6 +46,28 @@ interface WeddingInvitationProps {
 }
 
 export function WeddingInvitation({ data }: WeddingInvitationProps) {
+  const {
+    cardLanguage,
+    cardDesign,
+    coupleHashTag,
+    groomFullName,
+    brideFullName,
+    groomNickname,
+    brideNickname,
+    nameOrder,
+    fatherName,
+    motherName,
+    eventType,
+    eventDate,
+    hijriDate,
+    startTime,
+    endTime,
+    address,
+    googleMapsLink,
+    wazeLink,
+    contacts,
+  } = data;
+
   const [isOpen, setIsOpen] = useState(false);
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
@@ -61,9 +83,9 @@ export function WeddingInvitation({ data }: WeddingInvitationProps) {
   // Countdown Timer Effect
   useEffect(() => {
     const calculateTimeLeft = () => {
-      const eventDate = new Date(data.eventDate);
+      const eventDateObj = new Date(eventDate);
       const now = new Date();
-      const difference = eventDate.getTime() - now.getTime();
+      const difference = eventDateObj.getTime() - now.getTime();
 
       if (difference > 0) {
         return {
@@ -90,31 +112,31 @@ export function WeddingInvitation({ data }: WeddingInvitationProps) {
       clearTimeout(initialTimeout);
       clearInterval(timer);
     };
-  }, [data.eventDate]);
+  }, [eventDate]);
 
   const firstPerson =
-    data.nameOrder === "male-female"
+    nameOrder === "male-female"
       ? {
-          fullName: data.groomFullName,
-          nickname: data.groomNickname,
+          fullName: groomFullName,
+          nickname: groomNickname,
         }
       : {
-          fullName: data.brideFullName,
-          nickname: data.brideNickname,
+          fullName: brideFullName,
+          nickname: brideNickname,
         };
 
   const secondPerson =
-    data.nameOrder === "male-female"
+    nameOrder === "male-female"
       ? {
-          fullName: data.brideFullName,
-          nickname: data.brideNickname,
+          fullName: brideFullName,
+          nickname: brideNickname,
         }
       : {
-          fullName: data.groomFullName,
-          nickname: data.groomNickname,
+          fullName: groomFullName,
+          nickname: groomNickname,
         };
 
-  const locale = data.cardLanguage;
+  const locale = cardLanguage;
 
   const formatDateShort = (dateString: string) => {
     const date = new Date(dateString);
@@ -140,8 +162,8 @@ export function WeddingInvitation({ data }: WeddingInvitationProps) {
     }).format(date);
   };
 
-  const dateShort = formatDateShort(data.eventDate);
-  const dateLong = formatDateLong(data.eventDate);
+  const dateShort = formatDateShort(eventDate);
+  const dateLong = formatDateLong(eventDate);
 
   // Curtain animation variants
   const curtainVariants = {
@@ -179,10 +201,10 @@ export function WeddingInvitation({ data }: WeddingInvitationProps) {
           {/* Hero Section - Cover Page */}
           <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
             {/* Background Image */}
-            {data.cardDesign && (
+            {cardDesign && (
               <div className="absolute inset-0 z-0">
                 <Image
-                  src={`/card-design/${data.cardDesign}.png`}
+                  src={`/card-design/${cardDesign}.png`}
                   alt="Wedding background"
                   fill
                   className="object-cover"
@@ -261,19 +283,19 @@ export function WeddingInvitation({ data }: WeddingInvitationProps) {
                 </p>
 
                 {/* Parents Names */}
-                {(data.fatherName || data.motherName) && (
+                {(fatherName || motherName) && (
                   <div className="space-y-3 py-6">
-                    {data.fatherName && (
+                    {fatherName && (
                       <p className="text-xl md:text-2xl text-muted-foreground font-elegant italic">
-                        {data.fatherName}
+                        {fatherName}
                       </p>
                     )}
                     <p className="text-xl md:text-2xl text-muted-foreground font-display italic">
                       &
                     </p>
-                    {data.motherName && (
+                    {motherName && (
                       <p className="text-xl md:text-2xl text-muted-foreground font-elegant italic">
-                        {data.motherName}
+                        {motherName}
                       </p>
                     )}
                   </div>
@@ -298,8 +320,8 @@ export function WeddingInvitation({ data }: WeddingInvitationProps) {
                   ))}
                 <p className="text-sm text-muted-foreground">
                   {locale === "ms"
-                    ? `ke majlis ${data.eventType.toLowerCase()} ${locale === "ms" ? "anak kami" : "of our son and daughter"}`
-                    : `to the ${data.eventType.toLowerCase()} reception of our son and daughter`}
+                    ? `ke majlis ${eventType.toLowerCase()} ${locale === "ms" ? "anak kami" : "of our son and daughter"}`
+                    : `to the ${eventType.toLowerCase()} reception of our son and daughter`}
                 </p>
               </motion.div>
 
@@ -337,20 +359,14 @@ export function WeddingInvitation({ data }: WeddingInvitationProps) {
                 </h3>
                 <div className="space-y-2">
                   <p className="text-base text-muted-foreground leading-relaxed">
-                    {data.addressLine1}
-                    {data.addressLine2 && (
-                      <>
-                        ,<br />
-                        {data.addressLine2}
-                      </>
-                    )}
+                    {address}
                   </p>
                 </div>
                 {/* Navigation Buttons */}
                 <div className="space-y-4">
-                  {(data.googleMapsLink || data.wazeLink) && (
+                  {(googleMapsLink || wazeLink) && (
                     <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                      {data.googleMapsLink && (
+                      {googleMapsLink && (
                         <Button
                           variant="outline"
                           size="lg"
@@ -358,7 +374,7 @@ export function WeddingInvitation({ data }: WeddingInvitationProps) {
                           asChild
                         >
                           <a
-                            href={data.googleMapsLink}
+                            href={googleMapsLink}
                             target="_blank"
                             rel="noopener noreferrer"
                           >
@@ -367,7 +383,7 @@ export function WeddingInvitation({ data }: WeddingInvitationProps) {
                           </a>
                         </Button>
                       )}
-                      {data.wazeLink && (
+                      {wazeLink && (
                         <Button
                           variant="outline"
                           size="lg"
@@ -375,7 +391,7 @@ export function WeddingInvitation({ data }: WeddingInvitationProps) {
                           asChild
                         >
                           <a
-                            href={data.wazeLink}
+                            href={wazeLink}
                             target="_blank"
                             rel="noopener noreferrer"
                           >
@@ -403,9 +419,9 @@ export function WeddingInvitation({ data }: WeddingInvitationProps) {
                 </h3>
                 <div className="space-y-1">
                   <p className="text-base text-muted-foreground">{dateLong}</p>
-                  {data.hijriDate && (
+                  {hijriDate && (
                     <p className="text-sm text-muted-foreground italic">
-                      {data.hijriDate}
+                      {hijriDate}
                     </p>
                   )}
                 </div>
@@ -424,30 +440,30 @@ export function WeddingInvitation({ data }: WeddingInvitationProps) {
                   {locale === "ms" ? "Masa" : "Time"}
                 </h3>
                 <p className="text-base text-muted-foreground">
-                  {data.startTime} - {data.endTime}
+                  {startTime} - {endTime}
                 </p>
               </motion.div>
 
               {/* CONTACT Section */}
-              <motion.div
-                className="space-y-2 pt-8"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: false, amount: 0.5 }}
-                transition={{ duration: 0.5 }}
-                variants={fadeInUpVariants}
-              >
-                <h3 className="text-sm uppercase tracking-[0.3em] font-semibold">
-                  {locale === "ms" ? "Hubungi" : "Contact"}
-                </h3>
-                <p className="text-base text-muted-foreground">
-                  {locale === "ms"
-                    ? "Untuk sebarang pertanyaan"
-                    : "For any inquiries"}
-                </p>
-                {data.contacts && data.contacts.length > 0 && (
+              {contacts && contacts.length > 0 && (
+                <motion.div
+                  className="space-y-2 pt-8"
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: false, amount: 0.5 }}
+                  transition={{ duration: 0.5 }}
+                  variants={fadeInUpVariants}
+                >
+                  <h3 className="text-sm uppercase tracking-[0.3em] font-semibold">
+                    {locale === "ms" ? "Hubungi" : "Contact"}
+                  </h3>
+                  <p className="text-base text-muted-foreground">
+                    {locale === "ms"
+                      ? "Untuk sebarang pertanyaan"
+                      : "For any inquiries"}
+                  </p>
                   <div className="space-y-4 max-w-sm mx-auto pt-2">
-                    {data.contacts.map((contact, index) => (
+                    {contacts.map((contact, index) => (
                       <div
                         key={index}
                         className="flex items-center justify-between p-4 border rounded-lg bg-white"
@@ -471,21 +487,24 @@ export function WeddingInvitation({ data }: WeddingInvitationProps) {
                       </div>
                     ))}
                   </div>
-                )}
-              </motion.div>
+                </motion.div>
+              )}
 
-              <motion.div
-                className="space-y-6 pt-12"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: false, amount: 0.5 }}
-                transition={{ duration: 0.5 }}
-                variants={fadeInUpVariants}
-              >
-                <h3 className="text-lg uppercase text-muted-foreground">
-                  #AHMADXNORA
-                </h3>
-              </motion.div>
+              {/* HASHTAG Section */}
+              {coupleHashTag && (
+                <motion.div
+                  className="space-y-6 pt-12"
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: false, amount: 0.5 }}
+                  transition={{ duration: 0.5 }}
+                  variants={fadeInUpVariants}
+                >
+                  <h3 className="text-lg text-muted-foreground">
+                    #{coupleHashTag}
+                  </h3>
+                </motion.div>
+              )}
 
               {/* COUNTDOWN Section */}
               <motion.div
@@ -499,6 +518,7 @@ export function WeddingInvitation({ data }: WeddingInvitationProps) {
                 <h3 className="text-sm uppercase tracking-[0.3em] font-semibold">
                   {locale === "ms" ? "Menghitung Hari" : "Counting Down"}
                 </h3>
+
                 <div className="grid grid-cols-4 gap-4 max-w-md mx-auto">
                   {/* Days */}
                   <motion.div
@@ -612,6 +632,37 @@ export function WeddingInvitation({ data }: WeddingInvitationProps) {
                     </div>
                   </motion.div>
                 </div>
+
+                {/* Caption below countdown - Shows when time is up */}
+                {timeLeft.days === 0 &&
+                  timeLeft.hours === 0 &&
+                  timeLeft.minutes === 0 &&
+                  timeLeft.seconds === 0 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: 0.3 }}
+                      className="flex items-center justify-center gap-2"
+                    >
+                      <p className="text-base md:text-lg text-muted-foreground">
+                        {locale === "ms"
+                          ? "Majlis telah tiba!"
+                          : "The celebration has arrived!"}
+                      </p>
+                      <motion.span
+                        initial={{ rotate: -10 }}
+                        animate={{ rotate: 10 }}
+                        transition={{
+                          repeat: Infinity,
+                          repeatType: "reverse",
+                          duration: 0.5,
+                        }}
+                        className="text-2xl"
+                      >
+                        🎉
+                      </motion.span>
+                    </motion.div>
+                  )}
               </motion.div>
 
               {/* Watermark */}

@@ -50,9 +50,9 @@
       "title": "Maklumat Pasangan",
       "description": "Nama penuh dan panggilan pengantin",
       "groomFullName": "Nama Penuh Lelaki",
-      "groomFullNamePlaceholder": "Ahmad bin Abdullah",
+      "groomFullNamePlaceholder": "Faris bin Wahab",
       "brideFullName": "Nama Penuh Perempuan",
-      "brideFullNamePlaceholder": "Nora binti Ali",
+      "brideFullNamePlaceholder": "Sarah binti Ahmad",
       "groomNickname": "Nama Panggilan Lelaki",
       "groomNicknamePlaceholder": "Ahmad",
       "brideNickname": "Nama Panggilan Perempuan",
@@ -61,12 +61,12 @@
       "nameOrderMaleFemale": "Lelaki & Perempuan",
       "nameOrderFemaleMale": "Perempuan & Lelaki",
       "coupleHashTag": "Hashtag Pasangan",
-      "coupleHashTagPlaceholder": "AhmadXNora",
+      "coupleHashTagPlaceholder": "FarisXSarah",
       "parentsInfo": "Maklumat Ibu Bapa",
       "fatherName": "Nama Bapa",
-      "fatherNamePlaceholder": "Abdullah bin Hassan",
+      "fatherNamePlaceholder": "Wahab bin Hassan",
       "motherName": "Nama Ibu",
-      "motherNamePlaceholder": "Fatimah binti Ibrahim"
+      "motherNamePlaceholder": "Siti binti Samad"
     },
     "eventInfo": {
       "title": "Butiran Majlis",
@@ -84,17 +84,14 @@
       "eventTypes": {
         "wedding": "Majlis Perkahwinan",
         "engagement": "Majlis Pertunangan",
-        "reception": "Majlis Resepsi",
-        "nikah": "Majlis Akad Nikah"
+        "reception": "Majlis Resepsi"
       }
     },
     "location": {
       "title": "Lokasi Majlis",
       "description": "Alamat dan pautan navigasi",
-      "addressLine1": "Alamat Baris 1",
-      "addressLine1Placeholder": "No. 123, Jalan Mawar",
-      "addressLine2": "Alamat Baris 2",
-      "addressLine2Placeholder": "Taman Bunga, 50000 Kuala Lumpur",
+      "address": "Alamat",
+      "addressPlaceholder": "Dewan Serbaguna, Taman Gedung, 11900 Bayan Lepas, Pulau Pinang",
       "navigationLinks": "Pautan Navigasi (Pilihan)",
       "googleMaps": "Google Maps",
       "googleMapsPlaceholder": "https://maps.google.com/...",
@@ -107,7 +104,7 @@
       "namePlaceholder": "Nama",
       "phonePlaceholder": "No. Telefon",
       "addButton": "+ Tambah Hubungan",
-      "completionMessage": "Anda boleh melihat kad digital yang cantik di <here>sini</here>",
+      "completionMessage": "Anda boleh melihat demo kad digital yang cantik di <here>sini</here>",
       "completionHint": "Klik <complete>Selesai</complete> untuk mencipta kad anda"
     },
     "validation": {
@@ -125,18 +122,8 @@
       "eventDateRequired": "Tarikh majlis diperlukan",
       "startTimeRequired": "Masa mula diperlukan",
       "endTimeRequired": "Masa tamat diperlukan",
-      "address1Required": "Alamat baris 1 diperlukan",
-      "invalidLink": "Pautan tidak sah",
-      "themeRequired": "Sila pilih tema"
+      "addressRequired": "Alamat diperlukan",
+      "invalidLink": "Pautan tidak sah"
     }
-  },
-  "WeddingInvitation": {
-    "invitationTo": "Jemputan Ke",
-    "childrenOf": "Anak Kepada",
-    "date": "Tarikh",
-    "time": "Masa",
-    "location": "Lokasi",
-    "contactUs": "Hubungi Kami",
-    "footerMessage": "Kehadiran dan doa restu anda amat diharapkan"
   }
 }

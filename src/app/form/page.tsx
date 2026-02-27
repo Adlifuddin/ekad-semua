@@ -42,8 +42,7 @@ const createFormSchema = (t: (key: string) => string) =>
     endTime: z.string().min(1, t("validation.endTimeRequired")),
 
     // Location
-    addressLine1: z.string().min(1, t("validation.address1Required")),
-    addressLine2: z.string().optional(),
+    address: z.string().min(1, t("validation.addressRequired")),
     googleMapsLink: z
       .string()
       .url(t("validation.invalidLink"))
@@ -84,8 +83,7 @@ export default function FormPage() {
       hijriDate: "",
       startTime: "",
       endTime: "",
-      addressLine1: "",
-      addressLine2: "",
+      address: "",
       googleMapsLink: "",
       wazeLink: "",
     },

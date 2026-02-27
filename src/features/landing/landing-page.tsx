@@ -84,7 +84,7 @@ export function LandingPage() {
               Cipta Kad
             </Button>
           </Link>
-          <Link href="/#">
+          <Link href="/demo/faris-sarah">
             <Button
               size="lg"
               variant="outline"

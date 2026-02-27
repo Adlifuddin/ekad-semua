@@ -50,9 +50,9 @@
       "title": "Couple Information",
       "description": "Full names and nicknames of the bride and groom",
       "groomFullName": "Groom's Full Name",
-      "groomFullNamePlaceholder": "Ahmad bin Abdullah",
+      "groomFullNamePlaceholder": "Faris bin Wahab",
       "brideFullName": "Bride's Full Name",
-      "brideFullNamePlaceholder": "Nora binti Ali",
+      "brideFullNamePlaceholder": "Sarah binti Ahmad",
       "groomNickname": "Groom's Nickname",
       "groomNicknamePlaceholder": "Ahmad",
       "brideNickname": "Bride's Nickname",
@@ -61,12 +61,12 @@
       "nameOrderMaleFemale": "Male & Female",
       "nameOrderFemaleMale": "Female & Male",
       "coupleHashTag": "Couple's Hashtag",
-      "coupleHashTagPlaceholder": "AhmadXNora",
+      "coupleHashTagPlaceholder": "FarisXSarah",
       "parentsInfo": "Parents Information",
       "fatherName": "Father's Name",
-      "fatherNamePlaceholder": "Abdullah bin Hassan",
+      "fatherNamePlaceholder": "Wahab bin Hassan",
       "motherName": "Mother's Name",
-      "motherNamePlaceholder": "Fatimah binti Ibrahim"
+      "motherNamePlaceholder": "Siti binti Samad"
     },
     "eventInfo": {
       "title": "Event Details",
@@ -84,17 +84,14 @@
       "eventTypes": {
         "wedding": "Wedding Ceremony",
         "engagement": "Engagement Ceremony",
-        "reception": "Reception Ceremony",
-        "nikah": "Nikah Ceremony"
+        "reception": "Reception Ceremony"
       }
     },
     "location": {
       "title": "Event Location",
       "description": "Address and navigation links",
-      "addressLine1": "Address Line 1",
-      "addressLine1Placeholder": "No. 123, Jalan Mawar",
-      "addressLine2": "Address Line 2",
-      "addressLine2Placeholder": "Taman Bunga, 50000 Kuala Lumpur",
+      "address": "Address",
+      "addressPlaceholder": "Dewan Serbaguna, Taman Gedung, 11900 Bayan Lepas, Pulau Pinang",
       "navigationLinks": "Navigation Links (Optional)",
       "googleMaps": "Google Maps",
       "googleMapsPlaceholder": "https://maps.google.com/...",
@@ -107,7 +104,7 @@
       "namePlaceholder": "Name",
       "phonePlaceholder": "Phone Number",
       "addButton": "+ Add Contact",
-      "completionMessage": "You can view your beautiful digital e-card <here>here</here>",
+      "completionMessage": "You can view your beautiful digital e-card demo <here>here</here>",
       "completionHint": "Click <complete>Complete</complete> to create your card"
     },
     "validation": {
@@ -125,18 +122,8 @@
       "eventDateRequired": "Event date is required",
       "startTimeRequired": "Start time is required",
       "endTimeRequired": "End time is required",
-      "address1Required": "Address line 1 is required",
-      "invalidLink": "Invalid link",
-      "themeRequired": "Please select a theme"
+      "addressRequired": "Address is required",
+      "invalidLink": "Invalid link"
     }
-  },
-  "WeddingInvitation": {
-    "invitationTo": "Invitation to",
-    "childrenOf": "Children of",
-    "date": "Date",
-    "time": "Time",
-    "location": "Location",
-    "contactUs": "Contact Us",
-    "footerMessage": "Your presence and prayers are highly appreciated"
   }
 }

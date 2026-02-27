@@ -1,20 +1,22 @@
+"use client";
 import { WeddingInvitation } from "@/features/wedding-invitation/wedding-invitation";
+import { getLocalStorage } from "@/lib/localStorage";
 
-// This would typically fetch data from a database based on the ID
-// For now, we'll use sample data that matches the formSchema
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-async function getInvitationData(id: string) {
-  // In production, this would be a database query
-  // Example: const data = await db.invitation.findUnique({ where: { cardUrl: id } })
+function getWeddingDemoData() {
+  const data = getLocalStorage("weddingDemoData");
+  if (data) {
+    return JSON.parse(data);
+  }
 
+  // return default data if no data in localStorage
   return {
-    cardLanguage: "ms" as const,
+    cardLanguage: "ms",
     cardDesign: "design1",
     groomFullName: "Faris bin Wahab",
     brideFullName: "Sarah binti Ahmad",
     groomNickname: "Ahmad",
     brideNickname: "Nora",
-    nameOrder: "male-female" as const,
+    nameOrder: "male-female",
     fatherName: "Wahab bin Hassan",
     motherName: "Siti binti Samad",
     eventType: "Majlis Perkahwinan",
@@ -38,12 +40,8 @@ async function getInvitationData(id: string) {
   };
 }
 
-export default async function InvitationPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const data = await getInvitationData(params.id);
+export default function InvitationPage() {
+  const data = getWeddingDemoData();
 
   return <WeddingInvitation data={data} />;
 }
