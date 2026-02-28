@@ -1,49 +1,28 @@
 import { WeddingInvitation } from "@/features/wedding-invitation/wedding-invitation";
-
-// This would typically fetch data from a database based on the ID
-// For now, we'll use sample data that matches the formSchema
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-async function getInvitationData(id: string) {
-  // In production, this would be a database query
-  // Example: const data = await db.invitation.findUnique({ where: { cardUrl: id } })
-
-  return {
-    cardLanguage: "ms" as const,
-    cardDesign: "design1",
-    groomFullName: "Faris bin Wahab",
-    brideFullName: "Sarah binti Ahmad",
-    groomNickname: "Ahmad",
-    brideNickname: "Nora",
-    nameOrder: "male-female" as const,
-    fatherName: "Wahab bin Hassan",
-    motherName: "Siti binti Samad",
-    eventType: "Majlis Perkahwinan",
-    eventDate: "2026-06-15",
-    hijriDate: "15 Ramadan 1448H",
-    startTime: "11:00 AM",
-    endTime: "4:00 PM",
-    address: "Dewan Serbaguna, Taman Gedung, 11900 Bayan Lepas, Pulau Pinang",
-    googleMapsLink: "https://maps.google.com/",
-    wazeLink: "https://waze.com/",
-    contacts: [
-      {
-        name: "Ahmad",
-        phone: "+60123456789",
-      },
-      {
-        name: "Nora",
-        phone: "+60198765432",
-      },
-    ],
-  };
-}
+import { customFetch } from "@/lib/utils/custom-fetch";
+import { NotFoundContent } from "@/components/shared/not-found-content";
 
 export default async function InvitationPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const data = await getInvitationData(params.id);
+  const { id } = await params;
+
+  const response = await customFetch(`weddings/${id}`, {
+    method: "GET",
+  });
+
+  if (!response) {
+    return (
+      <NotFoundContent
+        title={`Invitation ${id} Not Found`}
+        message="The wedding invitation you're looking for doesn't exist or has been removed."
+      />
+    );
+  }
+
+  const data = response;
 
   return <WeddingInvitation data={data} />;
 }

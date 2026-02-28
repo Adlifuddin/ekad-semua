@@ -25,7 +25,7 @@ import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { useWeddingConstants } from "@/hooks/useWeddingConstants";
 import type { FormValues } from "@/app/form/page";
-import { saveLocalStorage } from "@/lib/localStorage";
+import { saveLocalStorage } from "@/lib/utils/localStorage";
 
 type Contact = {
   id: string;

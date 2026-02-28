@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, ReactNode } from "react";
-import { theme } from "@/lib/themes";
+import { theme } from "@/lib/utils/themes";
 
 interface ThemeContextType {
   theme: typeof theme;
