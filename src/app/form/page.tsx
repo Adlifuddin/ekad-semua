@@ -28,11 +28,7 @@ const createFormSchema = (t: (key: string) => string) =>
     coupleHashTag: z.string().optional(),
     fatherName: z.string().min(1, t("validation.fatherNameRequired")),
     motherName: z.string().min(1, t("validation.motherNameRequired")),
-    email: z
-      .string()
-      .email(t("validation.emailInvalid"))
-      .optional()
-      .or(z.literal("")),
+    email: z.string().email(t("validation.emailInvalid")),
     eventType: z.string().min(1, t("validation.eventTypeRequired")),
 
     // Event Information

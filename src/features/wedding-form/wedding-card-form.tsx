@@ -44,7 +44,7 @@ interface WeddingCardFormProps {
 
 // Define which fields belong to each step for validation
 const stepFields: Record<number, (keyof FormValues)[]> = {
-  0: ["cardLanguage", "cardDesign", "cardUrl"],
+  0: ["cardLanguage", "cardDesign", "cardUrl", "email"],
   1: [
     "groomFullName",
     "brideFullName",
@@ -180,6 +180,15 @@ export function WeddingCardForm({
                     placeholder={t("cardConfig.urlPlaceholder")}
                     required
                     description={t("cardConfig.urlDescription")}
+                  />
+
+                  <FormInput
+                    control={form.control}
+                    name="email"
+                    label={t("cardConfig.email")}
+                    placeholder={t("cardConfig.emailPlaceholder")}
+                    required
+                    description={t("cardConfig.emailDescription")}
                   />
                 </CardContent>
               </Card>

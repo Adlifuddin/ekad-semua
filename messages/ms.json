@@ -37,6 +37,9 @@
       "urlPlaceholder": "contoh-nama-kad",
       "urlDescription": "URL untuk kad digital anda (gunakan huruf kecil dan tanda '-' sahaja)",
       "urlPrefix": "ekad-semua /",
+      "email": "Email",
+      "emailPlaceholder": "example@example.com",
+      "emailDescription": "Email digunakan untuk mengirim resit pembayaran",
       "languages": {
         "malay": "Bahasa Malaysia",
         "english": "English"

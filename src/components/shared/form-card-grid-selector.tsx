@@ -76,7 +76,7 @@ export function FormCardGridSelector<T extends FieldValues>({
               onClick={() => handleSelect(option.value)}
               className={cn(
                 "relative group rounded-lg overflow-hidden transition-all duration-200",
-                "border-2 hover:shadow-lg focus:outline-none focus:ring-2",
+                "border-2 hover:shadow-lg focus:outline-none focus:ring-2 cursor-pointer",
                 isSelected
                   ? cn(
                       "border-primary ring-2 ring-ring/50 shadow-md",
