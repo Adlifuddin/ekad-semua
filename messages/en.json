@@ -1,5 +1,6 @@
 {
   "Wizard": {
+    "cancel": "Cancel",
     "previous": "Previous",
     "next": "Next",
     "complete": "Complete",

@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronRight, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/contexts/theme-context";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 
 export interface WizardStep {
   id: string;
@@ -29,6 +30,7 @@ export function FormWizard({
 }: FormWizardProps) {
   const { theme } = useTheme();
   const t = useTranslations("Wizard");
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0);
   const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set());
 
@@ -47,6 +49,12 @@ export function FormWizard({
     // Move to next step
     setCompletedSteps((prev) => new Set([...prev, currentStep]));
     setCurrentStep((prev) => prev + 1);
+  };
+
+  const handleCancel = () => {
+    if (isFirstStep) {
+      router.back();
+    }
   };
 
   const handlePrevious = () => {
@@ -165,19 +173,27 @@ export function FormWizard({
       {/* Navigation Buttons */}
       <div className="sticky bottom-0 bg-background/80 backdrop-blur-lg border-t pt-4 pb-6 -mx-4 px-4 md:px-8">
         <div className="flex justify-between items-center max-w-4xl mx-auto">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={handlePrevious}
-            disabled={isFirstStep}
-            className={cn(
-              "cursor-pointer transition-all",
-              isFirstStep && "invisible",
-            )}
-          >
-            <ChevronLeft className="w-4 h-4 mr-2" />
-            {t("previous")}
-          </Button>
+          {isFirstStep ? (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleCancel}
+              className={cn("cursor-pointer transition-all")}
+            >
+              <ChevronLeft className="w-4 h-4 mr-2" />
+              {t("cancel")}
+            </Button>
+          ) : (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handlePrevious}
+              className={cn("cursor-pointer transition-all")}
+            >
+              <ChevronLeft className="w-4 h-4 mr-2" />
+              {t("previous")}
+            </Button>
+          )}
 
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <span className="hidden md:inline">{t("step")}</span>
