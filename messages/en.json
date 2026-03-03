@@ -38,7 +38,7 @@
       "urlPlaceholder": "example-card-name",
       "urlDescription": "URL for your digital card (use lowercase and '-' only)",
       "urlPrefix": "ekad-semua /",
-      "email": "Email",
+      "userEmail": "Email",
       "emailPlaceholder": "example@example.com",
       "emailDescription": "Email is use to send payment receipt",
       "languages": {
