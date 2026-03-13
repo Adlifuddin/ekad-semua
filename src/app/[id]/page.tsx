@@ -13,7 +13,9 @@ export default async function InvitationPage({
     method: "GET",
   });
 
-  if (!response) {
+  const data = response?.cardSettings;
+
+  if (!response || !data) {
     return (
       <NotFoundContent
         title={`Invitation ${id} Not Found`}
@@ -21,8 +23,6 @@ export default async function InvitationPage({
       />
     );
   }
-
-  const data = response;
 
   return <WeddingInvitation data={data} />;
 }

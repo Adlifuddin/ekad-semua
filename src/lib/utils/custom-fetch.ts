@@ -1,11 +1,6 @@
-export interface ErrorDetail {
-  path: string
-  message: string
-}
-
 export interface ApiError extends Error {
   status?: number
-  data?: ErrorDetail[]
+  error?: string
   statusCode?: number
 }
 
@@ -23,17 +18,12 @@ export const customFetch = async (url: string, options: RequestInit = {}) => {
 
   if (!response.ok) {
     const data = await response.json()
-    const error: ApiError = new Error(data.error.message)
+    console.log("API error response:", data)
+    const error: ApiError = new Error(data.error)
     error.status = response.status
-    error.data = data.error.details
+    error.error = data.error
     error.statusCode = response.status
     throw error
-  }
-
-  if (response.status === 204) {
-    return {
-      message: 'No content',
-    }
   }
 
   return response.json()
