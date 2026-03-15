@@ -1,3 +1,5 @@
+import { toast } from './toast'
+
 export interface ApiError extends Error {
   status?: number
   error?: string
@@ -18,7 +20,8 @@ export const customFetch = async (url: string, options: RequestInit = {}) => {
 
   if (!response.ok) {
     const data = await response.json()
-    console.log("API error response:", data)
+    toast.error(data.error || 'An error occurred')
+    
     const error: ApiError = new Error(data.error)
     error.status = response.status
     error.error = data.error

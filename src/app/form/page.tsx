@@ -9,6 +9,7 @@ import { useContacts } from "@/features/wedding-form/hooks/useContacts";
 import { useTranslations } from "next-intl";
 import { useMemo } from "react";
 import { customFetch } from "@/lib/utils/custom-fetch";
+import Layout from "@/components/layout/Layout";
 
 const createFormSchema = (t: (key: string) => string) =>
   z.object({
@@ -99,34 +100,32 @@ export default function FormPage() {
       contacts: contacts.filter((c) => c.name && c.phone),
     };
 
-    try {
-      const response = await customFetch("/weddings", {
-        method: "POST",
-        body: JSON.stringify(formData),
-      });
+    const response = await customFetch("/weddings", {
+      method: "POST",
+      body: JSON.stringify(formData),
+    });
 
-      if (response.ok) {
-        console.log("Wedding card created successfully");
-        // You can add navigation or success message here
-      } else {
-        const error = await response.json();
-        console.error("Error:", error);
-      }
-    } catch (error) {
-      console.error("Error submitting form:", error);
+    if (response.ok) {
+      console.log("Wedding card created successfully");
+      // You can add navigation or success message here
+    } else {
+      const error = await response.json();
+      console.error("Error:", error);
     }
   };
 
   return (
-    <div className="min-h-screen">
-      <WeddingCardForm
-        form={form}
-        onSubmit={onSubmit}
-        contacts={contacts}
-        addContact={addContact}
-        removeContact={removeContact}
-        updateContact={updateContact}
-      />
-    </div>
+    <Layout pages="main">
+      <div className="min-h-screen">
+        <WeddingCardForm
+          form={form}
+          onSubmit={onSubmit}
+          contacts={contacts}
+          addContact={addContact}
+          removeContact={removeContact}
+          updateContact={updateContact}
+        />
+      </div>
+    </Layout>
   );
 }

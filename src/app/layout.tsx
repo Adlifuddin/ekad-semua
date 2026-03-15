@@ -8,7 +8,7 @@ import {
 import "./globals.css";
 import { ThemeProvider } from "@/contexts/theme-context";
 import { NextIntlClientProvider } from "next-intl";
-import MainLayout from "@/components/layout/MainLayout";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -49,7 +49,8 @@ export default function RootLayout({
       >
         <NextIntlClientProvider>
           <ThemeProvider>
-            <MainLayout>{children}</MainLayout>
+            {children}
+            <Toaster />
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>
