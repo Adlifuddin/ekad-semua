@@ -1,11 +1,7 @@
-import { getSession } from "@/lib/auth";
 import DashboardContent from "./dashboard-content";
 import Layout from "@/components/layout/Layout";
 
 export default async function DashboardPage() {
-  // proxy handles authentication - no need for redirect check
-  const session = await getSession();
-
   return (
     <Layout pages="main">
       <div className="container mx-auto py-8 px-4">
@@ -15,7 +11,7 @@ export default async function DashboardPage() {
             Manage and view all your wedding invitation cards
           </p>
         </div>
-        <DashboardContent userEmail={session!.email} />
+        <DashboardContent />
       </div>
     </Layout>
   );

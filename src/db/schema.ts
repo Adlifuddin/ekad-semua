@@ -3,6 +3,7 @@ import { relations } from "drizzle-orm";
 
 // Enums
 export const userRoleEnum = pgEnum("user_role", ["USER", "ADMIN"]);
+export const cardStatusEnum = pgEnum("card_status", ["Pending", "Approved", "Rejected", "Cancelled"]);
 
 // Users Table
 export const users = pgTable(
@@ -29,7 +30,7 @@ export const weddingCards = pgTable(
     cardUrl: text("card_url").notNull().unique(),
     userEmail: text("user_email").notNull(),
     cardSettings: jsonb("card_settings").notNull().$type<CardSettings>(),
-    isPublished: boolean("is_published").default(false).notNull(),
+    cardStatus: cardStatusEnum("card_status").default("Pending").notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
   },

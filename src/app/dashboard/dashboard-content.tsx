@@ -15,11 +15,7 @@ import { Card } from "@/components/ui/card";
 import { WeddingCard } from "@/db/schema";
 import { customFetch } from "@/lib/utils/custom-fetch";
 
-interface DashboardContentProps {
-  userEmail: string;
-}
-
-export default function DashboardContent({}: DashboardContentProps) {
+export default function DashboardContent() {
   const router = useRouter();
   const [weddingCards, setWeddingCards] = useState<WeddingCard[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -31,6 +27,7 @@ export default function DashboardContent({}: DashboardContentProps) {
       });
 
       setWeddingCards(data);
+      console.log("Fetched wedding cards:", data);
       setIsLoading(false);
     }
 
@@ -49,6 +46,19 @@ export default function DashboardContent({}: DashboardContentProps) {
     }
   };
 
+  const getStatusStyle = (status: string) => {
+    const styles = {
+      Pending:
+        "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200",
+      Approved:
+        "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+      Rejected: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
+      Cancelled:
+        "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200",
+    };
+    return styles[status as keyof typeof styles] || "bg-gray-100 text-gray-800";
+  };
+
   if (isLoading) {
     return (
       <Card className="p-8">
@@ -65,8 +75,7 @@ export default function DashboardContent({}: DashboardContentProps) {
         <TableHeader>
           <TableRow>
             <TableHead>Card URL</TableHead>
-            <TableHead>Couple Names</TableHead>
-            <TableHead>Event Date</TableHead>
+            <TableHead>User Email</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Created</TableHead>
             <TableHead className="text-right">Actions</TableHead>
@@ -92,20 +101,12 @@ export default function DashboardContent({}: DashboardContentProps) {
                     /{card.cardUrl}
                   </a>
                 </TableCell>
-                <TableCell>
-                  {card.cardSettings.groomNickname} &{" "}
-                  {card.cardSettings.brideNickname}
-                </TableCell>
-                <TableCell>{formatDate(card.cardSettings.eventDate)}</TableCell>
+                <TableCell>{card.userEmail}</TableCell>
                 <TableCell>
                   <span
-                    className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${
-                      card.isPublished
-                        ? "bg-green-100 text-green-700"
-                        : "bg-yellow-100 text-yellow-700"
-                    }`}
+                    className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusStyle(card.cardStatus)}`}
                   >
-                    {card.isPublished ? "Published" : "Draft"}
+                    {card.cardStatus}
                   </span>
                 </TableCell>
                 <TableCell>{formatDate(card.createdAt.toString())}</TableCell>

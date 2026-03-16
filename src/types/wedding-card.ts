@@ -48,7 +48,7 @@ export interface WeddingCardRecord {
   cardUrl: string;
   userEmail: string;
   cardSettings: CardSettings;
-  isPublished: boolean;
+  cardStatus: "Pending" | "Approved" | "Rejected" | "Cancelled";
   createdAt: Date;
   updatedAt: Date;
 }
@@ -59,7 +59,7 @@ export interface WeddingCardCreateResponse {
   cardUrl: string;
   userEmail: string;
   cardSettings: CardSettings;
-  isPublished: boolean;
+  cardStatus: "Pending" | "Approved" | "Rejected" | "Cancelled";
   createdAt: string;
   updatedAt: string;
 }

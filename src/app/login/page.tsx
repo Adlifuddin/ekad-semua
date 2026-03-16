@@ -14,6 +14,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import Layout from "@/components/layout/Layout";
+import { toast } from "@/lib/utils/toast";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -43,7 +44,7 @@ export default function LoginPage() {
       body: JSON.stringify(values),
     });
 
-    console.log("Login response:", response);
+    toast.success(`Login as ${response.user.email} successfully!`);
 
     // Redirect to dashboard after successful login
     router.push("/dashboard");

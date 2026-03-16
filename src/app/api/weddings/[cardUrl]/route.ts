@@ -133,7 +133,7 @@ export async function DELETE(
   }
 }
 
-// PATCH /api/weddings/[cardUrl] - Toggle publish status (owner only)
+// PATCH /api/weddings/[cardUrl] - Update card status (owner only)
 export async function PATCH(
   req: NextRequest,
   { params }: { params: Promise<{ cardUrl: string }> }
@@ -146,7 +146,16 @@ export async function PATCH(
 
   try {
     const { cardUrl } = await params;
-    const { isPublished } = await req.json();
+    const { cardStatus } = await req.json();
+
+    // Validate cardStatus
+    const validStatuses = ["Pending", "Approved", "Rejected", "Cancelled"];
+    if (cardStatus && !validStatuses.includes(cardStatus)) {
+      return NextResponse.json(
+        { error: "Invalid card status. Must be one of: Pending, Approved, Rejected, Cancelled" },
+        { status: 400 }
+      );
+    }
 
     // Check if the card exists and belongs to the user
     const [existingCard] = await db
@@ -167,11 +176,11 @@ export async function PATCH(
       );
     }
 
-    // Update publish status
+    // Update card status
     const [updatedCard] = await db
       .update(weddingCards)
       .set({
-        isPublished: isPublished ?? !existingCard.isPublished,
+        cardStatus: cardStatus as "Pending" | "Approved" | "Rejected" | "Cancelled",
         updatedAt: new Date(),
       })
       .where(eq(weddingCards.id, existingCard.id))
@@ -179,9 +188,9 @@ export async function PATCH(
 
     return NextResponse.json(updatedCard);
   } catch (error) {
-    console.error("Error updating publish status:", error);
+    console.error("Error updating card status:", error);
     return NextResponse.json(
-      { error: "Failed to update publish status" },
+      { error: "Failed to update card status" },
       { status: 500 }
     );
   }

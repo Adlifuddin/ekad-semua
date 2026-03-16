@@ -87,7 +87,7 @@ const response = await fetch("/api/weddings", {
 });
 
 const card = await response.json();
-// Returns: { id, cardUrl, userEmail, cardSettings, isPublished, createdAt, updatedAt }
+// Returns: { id, cardUrl, userEmail, cardSettings, cardStatus, createdAt, updatedAt }
 ```
 
 ### Get All User's Cards
@@ -103,7 +103,7 @@ const cards = await response.json();
 ```typescript
 const response = await fetch("/api/weddings/john-and-jane-2026");
 const card = await response.json();
-// Returns: { id, cardUrl, userEmail, cardSettings, isPublished, createdAt, updatedAt }
+// Returns: { id, cardUrl, userEmail, cardSettings, cardStatus, createdAt, updatedAt }
 ```
 
 ### Update Card
@@ -127,24 +127,18 @@ const response = await fetch("/api/weddings/john-and-jane-2026", {
 const updatedCard = await response.json();
 ```
 
-### Toggle Publish Status
+### Update Card Status
 
 ```typescript
-// Toggle current status
+// Update card status to Approved, Rejected, Cancelled, or Pending
 const response = await fetch("/api/weddings/john-and-jane-2026", {
   method: "PATCH",
   headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({}),
-});
-
-// Or set specific status
-const response = await fetch("/api/weddings/john-and-jane-2026", {
-  method: "PATCH",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ isPublished: true }),
+  body: JSON.stringify({ cardStatus: "Approved" }),
 });
 
 const card = await response.json();
+// Card status options: "Pending" | "Approved" | "Rejected" | "Cancelled"
 ```
 
 ### Delete Card

@@ -64,7 +64,7 @@ This will open Drizzle Studio at `https://local.drizzle.studio`
 - `cardUrl` - Unique URL slug for the wedding card
 - `userEmail` - Email of the card owner (links to users)
 - `cardSettings` - JSONB containing all card configuration
-- `isPublished` - Publication status
+- `cardStatus` - Card status: Pending, Approved, Rejected, or Cancelled
 - `createdAt` - Timestamp
 - `updatedAt` - Timestamp
 
