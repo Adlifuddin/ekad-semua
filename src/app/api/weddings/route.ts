@@ -51,16 +51,19 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { searchParams } = new URL(req.url);
-  const email = searchParams.get("email");
-
   // Build dynamic conditions array for optional filters
   const conditions: SQL[] = [];
-  if (email) {
-    conditions.push(eq(weddingCards.userEmail, email));
+  if(session.role !== "ADMIN") {
+    conditions.push(eq(weddingCards.userEmail, session.email));
   }
-  // Add more optional filters here in the future
-  // if (anotherParam) conditions.push(eq(weddingCards.field, anotherParam));
+  else {
+    const { searchParams } = new URL(req.url);
+    const email = searchParams.get("email");
+
+    if (email) {
+      conditions.push(eq(weddingCards.userEmail, email));
+    }
+  }
 
   const cards = await db
     .select()
