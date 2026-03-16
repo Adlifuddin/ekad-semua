@@ -3,7 +3,7 @@ import DashboardContent from "./dashboard-content";
 import Layout from "@/components/layout/Layout";
 
 export default async function DashboardPage() {
-  // Middleware handles authentication - no need for redirect check
+  // proxy handles authentication - no need for redirect check
   const session = await getSession();
 
   return (

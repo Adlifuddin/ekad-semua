@@ -6,7 +6,7 @@ import { getSession } from './lib/auth';
 const protectedRoutes = ['/dashboard'];
 const authRoutes = ['/login'];
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const session = await getSession();
@@ -34,7 +34,7 @@ export async function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-// Configure which routes the middleware should run on
+// Configure which routes the proxy should run on
 export const config = {
   matcher: [
     '/dashboard',
