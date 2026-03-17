@@ -17,7 +17,7 @@ export function NotFoundContent({
       <div className="text-center space-y-6">
         <h1 className="text-8xl font-bold text-primary">404</h1>
         <h2 className="text-3xl font-semibold">{title}</h2>
-        <p className="text-muted-foreground max-w-md">{message}</p>
+        <p className="text-muted-foreground">{message}</p>
         {showHomeButton && (
           <div className="pt-4">
             <Button asChild>

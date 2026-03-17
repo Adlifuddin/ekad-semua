@@ -93,7 +93,7 @@ export default function DashboardContent() {
   ) => {
     try {
       await customFetch(`/weddings/${cardUrl}`, {
-        method: "PUT",
+        method: "PATCH",
         body: JSON.stringify({ cardStatus: newStatus }),
       });
 

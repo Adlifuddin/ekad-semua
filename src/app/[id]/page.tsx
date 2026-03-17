@@ -13,9 +13,10 @@ export default async function InvitationPage({
     method: "GET",
   });
 
+  const isActive = response?.cardStatus === "Approved";
   const data = response?.cardSettings;
 
-  if (!response || !data) {
+  if (!response || !data || !isActive) {
     return (
       <NotFoundContent
         title={`Invitation ${id} Not Found`}

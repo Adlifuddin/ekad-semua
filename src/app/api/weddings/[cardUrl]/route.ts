@@ -82,7 +82,7 @@ export async function PUT(
       );
     }
 
-    const { contacts, cardStatus, cardUrl: newCardUrl, ...cardSettings } = data;
+    const { contacts, cardUrl: newCardUrl, ...cardSettings } = data;
 
     // If cardUrl is being changed, check if the new URL is already taken
     if (newCardUrl && newCardUrl !== cardUrl) {
@@ -110,9 +110,6 @@ export async function PUT(
     };
 
     // Add optional fields if provided
-    if (cardStatus) {
-      updateData.cardStatus = cardStatus;
-    }
     if (newCardUrl && newCardUrl !== cardUrl) {
       updateData.cardUrl = newCardUrl;
     }
@@ -129,6 +126,69 @@ export async function PUT(
     console.error("Error updating wedding card:", error);
     return NextResponse.json(
       { error: "Failed to update wedding card" },
+      { status: 500 }
+    );
+  }
+}
+
+// PATCH /api/weddings/[cardUrl] - Update only the card status (owner only)
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: Promise<{ cardUrl: string }> }
+) {
+  const session = await getSession();
+
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  if (session.role !== "ADMIN") {
+    return NextResponse.json(
+      { error: "Unauthorized" },
+      { status: 403 }
+    );
+  }
+
+  try {
+    const { cardUrl } = await params;
+    const { cardStatus } = await req.json();
+
+    if (!cardStatus) {
+      return NextResponse.json(
+        { error: "cardStatus is required" },
+        { status: 400 }
+      );
+    }
+
+    // Fetch the existing card
+    const [existingCard] = await db
+      .select()
+      .from(weddingCards)
+      .where(eq(weddingCards.cardUrl, cardUrl))
+      .limit(1);
+
+    if (!existingCard) {
+      return NextResponse.json(
+        { error: "Wedding card not found" },
+        { status: 404 }
+      );
+    }
+
+    // Update only the cardStatus
+    const [updatedCard] = await db
+      .update(weddingCards)
+      .set({
+        cardStatus,
+        updatedAt: new Date(),
+      })
+      .where(eq(weddingCards.id, existingCard.id))
+      .returning();
+
+    return NextResponse.json(updatedCard);
+  } catch (error) {
+    console.error("Error updating card status:", error);
+    return NextResponse.json(
+      { error: "Failed to update card status" },
       { status: 500 }
     );
   }
