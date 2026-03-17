@@ -9,6 +9,9 @@ export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ cardUrl: string }> }
 ) {
+  
+  const session = await getSession();
+
   try {
     const { cardUrl } = await params;
 
@@ -22,6 +25,16 @@ export async function GET(
       return NextResponse.json(null);
     }
 
+    if (session) {
+      if (session.role !== "ADMIN" && card.userEmail !== session.email) {
+        return NextResponse.json(
+          { error: "Unauthorized" },
+          { status: 403 }
+        );
+      }
+    }
+    
+    console.log("Fetched wedding card:", card);
     return NextResponse.json(card);
   } catch (error) {
     console.error("Error fetching wedding card:", error);
@@ -47,37 +60,67 @@ export async function PUT(
     const { cardUrl } = await params;
     const data = await req.json();
 
-    // Check if the card exists and belongs to the user
+    // Fetch the existing card
     const [existingCard] = await db
       .select()
       .from(weddingCards)
-      .where(
-        and(
-          eq(weddingCards.cardUrl, cardUrl),
-          eq(weddingCards.userEmail, session.email)
-        )
-      )
+      .where(eq(weddingCards.cardUrl, cardUrl))
       .limit(1);
 
     if (!existingCard) {
       return NextResponse.json(
-        { error: "Wedding card not found or unauthorized" },
+        { error: "Wedding card not found" },
         { status: 404 }
       );
     }
 
-    const { contacts, ...cardSettings } = data;
+    // If not admin, check ownership
+    if (session.role !== "ADMIN" && existingCard.userEmail !== session.email) {
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 403 }
+      );
+    }
+
+    const { contacts, cardStatus, cardUrl: newCardUrl, ...cardSettings } = data;
+
+    // If cardUrl is being changed, check if the new URL is already taken
+    if (newCardUrl && newCardUrl !== cardUrl) {
+      const [existingUrl] = await db
+        .select()
+        .from(weddingCards)
+        .where(eq(weddingCards.cardUrl, newCardUrl))
+        .limit(1);
+
+      if (existingUrl) {
+        return NextResponse.json(
+          { error: "Card URL already exists" },
+          { status: 400 }
+        );
+      }
+    }
+
+    // Build update object
+    const updateData: Partial<typeof weddingCards.$inferInsert> = {
+      cardSettings: {
+        ...cardSettings,
+        contacts: contacts || [],
+      },
+      updatedAt: new Date(),
+    };
+
+    // Add optional fields if provided
+    if (cardStatus) {
+      updateData.cardStatus = cardStatus;
+    }
+    if (newCardUrl && newCardUrl !== cardUrl) {
+      updateData.cardUrl = newCardUrl;
+    }
 
     // Update the card
     const [updatedCard] = await db
       .update(weddingCards)
-      .set({
-        cardSettings: {
-          ...cardSettings,
-          contacts: contacts || [],
-        },
-        updatedAt: new Date(),
-      })
+      .set(updateData)
       .where(eq(weddingCards.id, existingCard.id))
       .returning();
 
@@ -105,21 +148,23 @@ export async function DELETE(
   try {
     const { cardUrl } = await params;
 
-    // Delete the card (only if it belongs to the user)
     const [deletedCard] = await db
       .delete(weddingCards)
-      .where(
-        and(
-          eq(weddingCards.cardUrl, cardUrl),
-          eq(weddingCards.userEmail, session.email)
-        )
-      )
+      .where(eq(weddingCards.cardUrl, cardUrl))
       .returning();
 
     if (!deletedCard) {
       return NextResponse.json(
-        { error: "Wedding card not found or unauthorized" },
+        { error: "Wedding card not found" },
         { status: 404 }
+      );
+    }
+
+    // If not admin, check ownership
+    if (session.role !== "ADMIN" && deletedCard.userEmail !== session.email) {
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 403 }
       );
     }
 
@@ -128,69 +173,6 @@ export async function DELETE(
     console.error("Error deleting wedding card:", error);
     return NextResponse.json(
       { error: "Failed to delete wedding card" },
-      { status: 500 }
-    );
-  }
-}
-
-// PATCH /api/weddings/[cardUrl] - Update card status (owner only)
-export async function PATCH(
-  req: NextRequest,
-  { params }: { params: Promise<{ cardUrl: string }> }
-) {
-  const session = await getSession();
-
-  if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  try {
-    const { cardUrl } = await params;
-    const { cardStatus } = await req.json();
-
-    // Validate cardStatus
-    const validStatuses = ["Pending", "Approved", "Rejected", "Cancelled"];
-    if (cardStatus && !validStatuses.includes(cardStatus)) {
-      return NextResponse.json(
-        { error: "Invalid card status. Must be one of: Pending, Approved, Rejected, Cancelled" },
-        { status: 400 }
-      );
-    }
-
-    // Check if the card exists and belongs to the user
-    const [existingCard] = await db
-      .select()
-      .from(weddingCards)
-      .where(
-        and(
-          eq(weddingCards.cardUrl, cardUrl),
-          eq(weddingCards.userEmail, session.email)
-        )
-      )
-      .limit(1);
-
-    if (!existingCard) {
-      return NextResponse.json(
-        { error: "Wedding card not found or unauthorized" },
-        { status: 404 }
-      );
-    }
-
-    // Update card status
-    const [updatedCard] = await db
-      .update(weddingCards)
-      .set({
-        cardStatus: cardStatus as "Pending" | "Approved" | "Rejected" | "Cancelled",
-        updatedAt: new Date(),
-      })
-      .where(eq(weddingCards.id, existingCard.id))
-      .returning();
-
-    return NextResponse.json(updatedCard);
-  } catch (error) {
-    console.error("Error updating card status:", error);
-    return NextResponse.json(
-      { error: "Failed to update card status" },
       { status: 500 }
     );
   }

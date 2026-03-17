@@ -46,8 +46,8 @@ export default function MainLayout({ children }: MainLayoutProps) {
         theme.gradient.light,
       )}
     >
-      <header className="px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
+      <header className="px-4 md:px-12 py-6">
+        <div className="flex justify-between items-center">
           <Link href="/" className="text-lg sm:text-xl md:text-2xl font-bold">
             <span
               className={cn(

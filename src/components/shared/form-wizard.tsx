@@ -20,6 +20,7 @@ interface FormWizardProps {
   children: ReactNode[];
   onValidate?: (stepIndex: number) => Promise<boolean>;
   className?: string;
+  handleComplete: () => void;
 }
 
 export function FormWizard({
@@ -27,6 +28,7 @@ export function FormWizard({
   children,
   onValidate,
   className,
+  handleComplete,
 }: FormWizardProps) {
   const { theme } = useTheme();
   const t = useTranslations("Wizard");
@@ -97,6 +99,7 @@ export function FormWizard({
               return (
                 <button
                   key={step.id}
+                  type="button"
                   onClick={() => goToStep(index)}
                   disabled={!isClickable}
                   className={cn(
@@ -206,7 +209,8 @@ export function FormWizard({
 
           {isLastStep ? (
             <Button
-              type="submit"
+              type="button"
+              onClick={handleComplete}
               className={cn(
                 "cursor-pointer bg-linear-to-r text-white border-0 shadow-lg transition-all hover:scale-105",
                 theme.gradient.primary,

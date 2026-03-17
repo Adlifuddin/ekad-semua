@@ -12,16 +12,9 @@ import Link from "next/link";
 import { customFetch } from "@/lib/utils/custom-fetch";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import Layout from "@/components/layout/Layout";
 import { toast } from "@/lib/utils/toast";
-
-const loginSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(1, "Password is required"),
-});
-
-type LoginFormValues = z.infer<typeof loginSchema>;
+import { loginSchema, type LoginFormValues } from "@/schemas/auth";
 
 export default function LoginPage() {
   const { theme } = useTheme();

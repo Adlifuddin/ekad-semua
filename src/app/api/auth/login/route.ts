@@ -4,11 +4,7 @@ import { users } from "@/db/schema";
 import { verifyPassword, createToken, setAuthCookie } from "@/lib/auth";
 import { z } from "zod";
 import { eq } from "drizzle-orm";
-
-const loginSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(1),
-});
+import { loginApiSchema as loginSchema } from "@/schemas/auth";
 
 export async function POST(req: NextRequest) {
   try {

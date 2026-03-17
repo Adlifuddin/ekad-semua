@@ -1,62 +1,26 @@
 "use client";
 
 import { WeddingCardForm } from "@/features/wedding-form/wedding-card-form";
-import * as z from "zod";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useUpdateLocale } from "@/hooks/useUpdateLocale";
 import { useContacts } from "@/features/wedding-form/hooks/useContacts";
 import { useTranslations } from "next-intl";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { customFetch } from "@/lib/utils/custom-fetch";
 import Layout from "@/components/layout/Layout";
+import {
+  createFormSchema,
+  type WeddingFormValues,
+} from "@/schemas/wedding-form";
+import { toast } from "@/lib/utils/toast";
 
-const createFormSchema = (t: (key: string) => string) =>
-  z.object({
-    // Card Configuration
-    cardLanguage: z.enum(["ms", "en"]),
-    cardDesign: z.string().min(1, t("validation.selectDesign")),
-    cardUrl: z
-      .string()
-      .min(1, t("validation.urlRequired"))
-      .regex(/^[a-z0-9-]+$/, t("validation.urlFormat")),
-
-    // Couple Information
-    groomFullName: z.string().min(1, t("validation.groomNameRequired")),
-    brideFullName: z.string().min(1, t("validation.brideNameRequired")),
-    groomNickname: z.string().min(1, t("validation.groomNicknameRequired")),
-    brideNickname: z.string().min(1, t("validation.brideNicknameRequired")),
-    nameOrder: z.enum(["male-female", "female-male"]),
-    coupleHashTag: z.string().optional(),
-    fatherName: z.string().min(1, t("validation.fatherNameRequired")),
-    motherName: z.string().min(1, t("validation.motherNameRequired")),
-    userEmail: z.string().email(t("validation.emailInvalid")),
-    eventType: z.string().min(1, t("validation.eventTypeRequired")),
-
-    // Event Information
-    eventDate: z.string().min(1, t("validation.eventDateRequired")),
-    hijriDate: z.string().optional(),
-    startTime: z.string().min(1, t("validation.startTimeRequired")),
-    endTime: z.string().min(1, t("validation.endTimeRequired")),
-
-    // Location
-    address: z.string().min(1, t("validation.addressRequired")),
-    googleMapsLink: z
-      .string()
-      .url(t("validation.invalidLink"))
-      .optional()
-      .or(z.literal("")),
-    wazeLink: z
-      .string()
-      .url(t("validation.invalidLink"))
-      .optional()
-      .or(z.literal("")),
-  });
-
-export type FormValues = z.infer<ReturnType<typeof createFormSchema>>;
+export type FormValues = WeddingFormValues;
 
 export default function FormPage() {
-  const { contacts, addContact, removeContact, updateContact } = useContacts();
+  const [formKey, setFormKey] = useState(0);
+  const { contacts, addContact, removeContact, updateContact, setContacts } =
+    useContacts();
   const t = useTranslations("WeddingForm");
 
   const formSchema = useMemo(() => createFormSchema(t), [t]);
@@ -105,19 +69,22 @@ export default function FormPage() {
       body: JSON.stringify(formData),
     });
 
-    if (response.ok) {
-      console.log("Wedding card created successfully");
-      // You can add navigation or success message here
-    } else {
-      const error = await response.json();
-      console.error("Error:", error);
-    }
+    toast.success(`Wedding card ${response.cardUrl} created successfully!`, {
+      description:
+        "An email will be sent to you after the purchase. Please wait for the card to be approved.",
+    });
+
+    // Reset form, contacts, and wizard
+    form.reset();
+    setContacts([{ id: "1", name: "", phone: "" }]);
+    setFormKey((prev) => prev + 1);
   };
 
   return (
     <Layout pages="main">
       <div className="min-h-screen">
         <WeddingCardForm
+          key={formKey}
           form={form}
           onSubmit={onSubmit}
           contacts={contacts}

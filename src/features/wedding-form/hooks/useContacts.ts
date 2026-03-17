@@ -30,6 +30,7 @@ export function useContacts(initialContacts: Contact[] = [{ id: "1", name: "", p
 
   return {
     contacts,
+    setContacts,
     addContact,
     removeContact,
     updateContact,

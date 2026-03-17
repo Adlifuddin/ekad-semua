@@ -33,6 +33,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
           warning:
             "!bg-yellow-50 !text-yellow-900 !border-yellow-200 dark:!bg-yellow-950 dark:!text-yellow-100 dark:!border-yellow-800",
           info: "!bg-blue-50 !text-blue-900 !border-blue-200 dark:!bg-blue-950 dark:!text-blue-100 dark:!border-blue-800",
+          description: "!text-current !opacity-90 dark:!opacity-95",
         },
       }}
       style={

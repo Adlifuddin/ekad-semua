@@ -126,8 +126,12 @@ export function WeddingCardForm({
         <WeddingCardFormHeader />
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <FormWizard steps={wizardSteps} onValidate={validateStep}>
+          <form>
+            <FormWizard
+              steps={wizardSteps}
+              onValidate={validateStep}
+              handleComplete={form.handleSubmit(onSubmit)}
+            >
               {/* Step 0: Card Configuration */}
               <Card className={cn("shadow-sm card-hover", theme.colors.border)}>
                 <CardHeader className="space-y-1 pb-4">
