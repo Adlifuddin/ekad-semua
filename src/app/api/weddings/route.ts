@@ -3,6 +3,7 @@ import { getSession } from "@/lib/auth";
 import { db } from "@/db";
 import { weddingCards } from "@/db/schema";
 import { eq, desc, and, SQL } from "drizzle-orm";
+import { randomUUID } from "crypto";
 
 export async function POST(req: NextRequest) {
   // need to add token some form of verification after user payment, for now we will just accept the request and create the card
@@ -10,13 +11,18 @@ export async function POST(req: NextRequest) {
   const data = await req.json();
   
   try {
-    const { cardUrl, userEmail, contacts, ...cardSettings } = data;
+    const { cardUrl, userEmail, contacts, paymentRefId, ...cardSettings } = data;
+
+    // Generate a secure edit token
+    const editToken = randomUUID();
 
     const [newWeddingCard] = await db
       .insert(weddingCards)
       .values({
         cardUrl: cardUrl,
         userEmail: userEmail,
+        editToken: editToken,
+        paymentRefId: paymentRefId || null,
         cardSettings: {
           ...cardSettings,
           userEmail,
@@ -25,7 +31,10 @@ export async function POST(req: NextRequest) {
       })
       .returning();
     
-    return NextResponse.json(newWeddingCard);
+    return NextResponse.json({
+      ...newWeddingCard,
+      editUrl: `/form/edit/${cardUrl}?token=${editToken}`,
+    });
   } catch (error) {
     console.error("Wedding card creation error:", error);
     

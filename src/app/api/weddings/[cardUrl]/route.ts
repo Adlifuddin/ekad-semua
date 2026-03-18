@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@/lib/auth";
 import { db } from "@/db";
 import { weddingCards } from "@/db/schema";
-import { eq, and } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 // GET /api/weddings/[cardUrl] - Get a single wedding card (public)
 export async function GET(
@@ -25,13 +25,12 @@ export async function GET(
       return NextResponse.json(null);
     }
 
-    if (session) {
-      if (session.role !== "ADMIN" && card.userEmail !== session.email) {
-        return NextResponse.json(
-          { error: "Unauthorized" },
-          { status: 403 }
-        );
-      }
+    // Authorization check for authenticated users
+    if (session && session.role !== "ADMIN" && card.userEmail !== session.email) {
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 403 }
+      );
     }
     
     console.log("Fetched wedding card:", card);
@@ -51,10 +50,7 @@ export async function PUT(
   { params }: { params: Promise<{ cardUrl: string }> }
 ) {
   const session = await getSession();
-
-  if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const editToken = req.nextUrl.searchParams.get("token");
 
   try {
     const { cardUrl } = await params;
@@ -74,8 +70,12 @@ export async function PUT(
       );
     }
 
-    // If not admin, check ownership
-    if (session.role !== "ADMIN" && existingCard.userEmail !== session.email) {
+    // Check authorization: either valid session OR valid edit token
+    const isAuthorizedBySession = session && 
+      (session.role === "ADMIN" || existingCard.userEmail === session.email);
+    const isAuthorizedByToken = editToken && editToken === existingCard.editToken;
+
+    if (!isAuthorizedBySession && !isAuthorizedByToken) {
       return NextResponse.json(
         { error: "Unauthorized" },
         { status: 403 }

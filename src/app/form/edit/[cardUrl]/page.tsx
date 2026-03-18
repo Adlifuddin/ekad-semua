@@ -9,7 +9,7 @@ import { useTranslations } from "next-intl";
 import { useEffect, useMemo, useState } from "react";
 import { customFetch } from "@/lib/utils/custom-fetch";
 import Layout from "@/components/layout/Layout";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter, useParams, useSearchParams } from "next/navigation";
 import {
   createFormSchema,
   type WeddingFormValues,
@@ -24,7 +24,9 @@ export default function EditFormPage() {
   const t = useTranslations("WeddingForm");
   const router = useRouter();
   const params = useParams();
+  const searchParams = useSearchParams();
   const cardUrl = params?.cardUrl as string;
+  const editToken = searchParams.get("token");
   const [loading, setLoading] = useState(true);
 
   const formSchema = useMemo(() => createFormSchema(t), [t]);
@@ -65,7 +67,8 @@ export default function EditFormPage() {
   // Fetch existing wedding card data
   useEffect(() => {
     const fetchCardData = async () => {
-      const card = await customFetch(`/weddings/${cardUrl}`, {
+      const tokenParam = editToken ? `?token=${editToken}` : "";
+      const card = await customFetch(`/weddings/${cardUrl}${tokenParam}`, {
         method: "GET",
       });
 
@@ -111,7 +114,7 @@ export default function EditFormPage() {
     };
 
     fetchCardData();
-  }, [cardUrl, form, setContacts, router]);
+  }, [cardUrl, editToken, form, setContacts, router]);
 
   const onSubmit = async (values: FormValues) => {
     const formData = {
@@ -119,7 +122,8 @@ export default function EditFormPage() {
       contacts: contacts.filter((c) => c.name && c.phone),
     };
 
-    const response = await customFetch(`/weddings/${cardUrl}`, {
+    const tokenParam = editToken ? `?token=${editToken}` : "";
+    const response = await customFetch(`/weddings/${cardUrl}${tokenParam}`, {
       method: "PUT",
       body: JSON.stringify(formData),
     });

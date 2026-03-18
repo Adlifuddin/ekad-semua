@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, boolean, pgEnum, uuid, index, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, pgEnum, uuid, index, jsonb } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
 // Enums
@@ -29,6 +29,7 @@ export const weddingCards = pgTable(
     id: uuid("id").defaultRandom().primaryKey(),
     cardUrl: text("card_url").notNull().unique(),
     userEmail: text("user_email").notNull(),
+    editToken: text("edit_token").notNull().unique(),
     cardSettings: jsonb("card_settings").notNull().$type<CardSettings>(),
     cardStatus: cardStatusEnum("card_status").default("Pending").notNull(),
     paymentRefId: text("payment_ref_id"),

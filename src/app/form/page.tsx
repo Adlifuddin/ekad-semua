@@ -14,11 +14,16 @@ import {
   type WeddingFormValues,
 } from "@/schemas/wedding-form";
 import { toast } from "@/lib/utils/toast";
+import { PaymentDialog } from "@/features/wedding-form/payment-dialog";
 
 export type FormValues = WeddingFormValues;
 
 export default function FormPage() {
   const [formKey, setFormKey] = useState(0);
+  const [isPaymentDialogOpen, setIsPaymentDialogOpen] = useState(false);
+  const [pendingFormData, setPendingFormData] = useState<FormValues | null>(
+    null,
+  );
   const { contacts, addContact, removeContact, updateContact, setContacts } =
     useContacts();
   const t = useTranslations("WeddingForm");
@@ -59,9 +64,18 @@ export default function FormPage() {
   useUpdateLocale(cardLanguage);
 
   const onSubmit = async (values: FormValues) => {
+    // Store form data and open payment dialog
+    setPendingFormData(values);
+    setIsPaymentDialogOpen(true);
+  };
+
+  const handlePaymentSubmit = async (paymentRefId: string) => {
+    if (!pendingFormData) return;
+
     const formData = {
-      ...values,
+      ...pendingFormData,
       contacts: contacts.filter((c) => c.name && c.phone),
+      paymentRefId, // Add payment reference ID
     };
 
     const response = await customFetch("/weddings", {
@@ -74,10 +88,15 @@ export default function FormPage() {
         "An email will be sent to you after the purchase. Please wait for the card to be approved.",
     });
 
+    const editUrl = `${window.location.origin}${response.editUrl}`;
+    console.log("Edit URL:", editUrl);
+
     // Reset form, contacts, and wizard
     form.reset();
     setContacts([{ id: "1", name: "", phone: "" }]);
     setFormKey((prev) => prev + 1);
+    setIsPaymentDialogOpen(false);
+    setPendingFormData(null);
   };
 
   return (
@@ -93,6 +112,12 @@ export default function FormPage() {
           updateContact={updateContact}
         />
       </div>
+
+      <PaymentDialog
+        open={isPaymentDialogOpen}
+        onOpenChange={setIsPaymentDialogOpen}
+        onSubmit={handlePaymentSubmit}
+      />
     </Layout>
   );
 }
