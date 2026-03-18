@@ -31,6 +31,7 @@ export const weddingCards = pgTable(
     userEmail: text("user_email").notNull(),
     cardSettings: jsonb("card_settings").notNull().$type<CardSettings>(),
     cardStatus: cardStatusEnum("card_status").default("Pending").notNull(),
+    paymentRefId: text("payment_ref_id"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
   },

@@ -1,0 +1,1 @@
+ALTER TABLE "wedding_cards" ADD COLUMN "payment_ref_id" text;
