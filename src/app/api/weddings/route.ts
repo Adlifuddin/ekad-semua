@@ -4,11 +4,14 @@ import { db } from "@/db";
 import { weddingCards } from "@/db/schema";
 import { eq, desc, and, SQL } from "drizzle-orm";
 import { randomUUID } from "crypto";
+import { sendEmail } from "@/services/mailer/mailer";
+import WeddingPending from "../../../../emails/weddings/weddings-pending";
 
 export async function POST(req: NextRequest) {
   // need to add token some form of verification after user payment, for now we will just accept the request and create the card
 
   const data = await req.json();
+  let createdCardId: string | null = null;
   
   try {
     const { cardUrl, userEmail, contacts, paymentRefId, ...cardSettings } = data;
@@ -30,11 +33,36 @@ export async function POST(req: NextRequest) {
         },
       })
       .returning();
+
+    createdCardId = newWeddingCard.id;
+
+    const editUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/form/edit/${cardUrl}?token=${editToken}`;
+
+    // Try to send email, rollback if it fails
+    try {
+      await sendEmail({
+        to: userEmail,
+        subject: 'Wedding Card Request Received - Pending Approval',
+        component: WeddingPending({
+          groomName: cardSettings.groomFullName,
+          brideName: cardSettings.brideFullName,
+          cardUrl: cardUrl,
+          paymentRefId: paymentRefId || 'N/A',
+          editUrl: editUrl,
+        }),
+      });
+    } catch (emailError) {
+      console.error("Email sending failed, rolling back card creation:", emailError);
+      
+      // Rollback: Delete the created card
+      if (createdCardId) {
+        await db.delete(weddingCards).where(eq(weddingCards.id, createdCardId));
+      }
+      
+      throw new Error("Failed to send confirmation email. Please try again later.");
+    }
     
-    return NextResponse.json({
-      ...newWeddingCard,
-      editUrl: `/form/edit/${cardUrl}?token=${editToken}`,
-    });
+    return NextResponse.json(newWeddingCard);
   } catch (error) {
     console.error("Wedding card creation error:", error);
     
@@ -47,7 +75,7 @@ export async function POST(req: NextRequest) {
     }
     
     return NextResponse.json(
-      { error: "Failed to create wedding card" },
+      { error: error instanceof Error ? error.message : "Failed to create wedding card" },
       { status: 500 }
     );
   }
